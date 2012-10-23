@@ -2,7 +2,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1024, 768), "Lines");
+	sf::RenderWindow window(sf::VideoMode(1024, 768), "Road");
 	window.setFramerateLimit(60);
 
 	sf::RectangleShape grass(sf::Vector2f(262, 768));
