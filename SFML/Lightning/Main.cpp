@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
+
 #include <ctime>
-#include <cstdio>
+#include <cstdio> // rand
 
 #include "Lightning.hpp"
 
@@ -14,10 +15,10 @@ int main()
 
     // Initialize lightning class
     Lightning lightning(30, 3, sf::Color::Green, sf::Color::Blue);
-    lightning.setPosition(20.0f, 20.0f);
-    lightning.setSize(50.0f, 600.0f);
-    lightning.setOrigin(0, 10);
-    lightning.rotate(-10);
+    lightning.setPosition(20.f, 20.f);
+    lightning.setSize(30.f, 600.f);
+    lightning.setOrigin(0.f, 10.f);
+    lightning.rotate(-10.f);
     lightning.scale(0.5f, 0.5f);
 
     bool paused = false;

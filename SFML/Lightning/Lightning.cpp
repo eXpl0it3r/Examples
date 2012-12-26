@@ -1,11 +1,11 @@
 #include "Lightning.hpp"
 
 #include <ctime>
-#include <cstdio>
+#include <cstdio> // rand
 
 Lightning::Lightning(const unsigned long& noSegments, const unsigned int& thickness, const sf::Color& color, const sf::Color& fadeColor) :
-    m_fadeColor(fadeColor),
     m_color(color),
+    m_fadeColor(fadeColor),
     m_noSegments(noSegments),
     m_thickness(thickness)
 {
@@ -15,16 +15,16 @@ Lightning::Lightning(const unsigned long& noSegments, const unsigned int& thickn
 void Lightning::generate()
 {
   sf::Vector2f start;
-  sf::Vector2f end(0.0f, 0.0f);
+  sf::Vector2f end(0.f, 0.f);
 
   m_segments.clear();
 
-  m_segments.push_back(0.0f); // The start point of the lightning is centered
+  m_segments.push_back(0.f); // The start point of the lightning is centered
 
   for(unsigned long c = 1; c < m_noSegments - 1; ++c)
-    m_segments.push_back(rand(-1.0f, 1.0f));
+    m_segments.push_back(rand(-1.f, 1.f));
 
-  m_segments.push_back(0.0f); // The end point of the lightning is also centered
+  m_segments.push_back(0.f); // The end point of the lightning is also centered
 }
 
 const sf::Color& Lightning::getColor() const
@@ -71,7 +71,7 @@ float Lightning::rand(float low, float high) const
 sf::VertexArray Lightning::line(sf::Vector2f start, sf::Vector2f end, unsigned int thickness, sf::Color color) const
 {
     sf::VertexArray line(sf::Lines, 2*thickness);
-    for(unsigned int i = 0; i < 2*thickness; i+=2)
+    for(unsigned int i = 0; i < 2*thickness; i += 2)
     {
         line[i].position = start;
         line[i].position.x += i/2.f;
@@ -114,7 +114,7 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     states.transform *= getTransform();
 
-    // Draw multiple lightnings, decreasing the thinkness by 1.0 until we reach thickness 1.0 (or less)
+    // Draw multiple lightnings, decreasing the thickness by 1.0 until we reach thickness 1.0 (or less)
     for(float t = static_cast<float>(m_thickness); t >= 1.0f; --t, color += colorStep)
         for(unsigned long c = 0; c < m_noSegments - 1; ++c)
         {

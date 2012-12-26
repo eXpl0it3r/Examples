@@ -1,4 +1,4 @@
-// Thanks FRex for the modified and more compact hue shift function
+// Thanks Foaly for the modified and more compact hue shift function
 
 #include <SFML/Graphics.hpp>
 

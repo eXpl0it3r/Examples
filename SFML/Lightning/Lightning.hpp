@@ -2,6 +2,7 @@
 #define LIGHTNING_HPP
 
 #include <SFML/Graphics.hpp>
+
 #include <vector>
 
 class Lightning : public sf::Transformable, public sf::Drawable
