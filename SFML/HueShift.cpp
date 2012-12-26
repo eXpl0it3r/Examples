@@ -1,68 +1,49 @@
+// Thanks FRex for the modified and more compact hue shift function
+
 #include <SFML/Graphics.hpp>
+
+#include <cmath> // abs
+
+template <typename T> T clamp(const T& value, const T& low, const T& high)
+{
+  return value < low ? low : (value > high ? high : value);
+}
 
 int main()
 {
-	sf::RenderWindow Screen (sf::VideoMode (800, 600, 32), "Game", sf::Style::Close);
-	Screen.setFramerateLimit(60);
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Hue Shift");
+	window.setFramerateLimit(60); // Limit the frame-rate
 
 	sf::RectangleShape rect(sf::Vector2f(350.f, 350.f));
 	rect.setPosition(150, 150);
 
-	int dr = 0;
-	int dg = 0;
-	int db = 0;
+    // Starting color
+	float hue = 0.f;
 
-	sf::Uint8 r = 255, g = 0,  b = 0;
-
-	while (Screen.isOpen())
+	while(window.isOpen())
 	{
-		sf::Event Event;
-		while (Screen.pollEvent (Event))
+		sf::Event event;
+		while(window.pollEvent(event))
 		{
-			if (Event.type == sf::Event::Closed)
-				Screen.close();
+			if(event.type == sf::Event::Closed)
+                window.close();
 		}
 
-		r += dr;
-		g += dg;
-		b += db;
+        // Calculate the color
+        hue += 0.002f;
+        if(hue > 1.f)
+            hue = 0.f;
 
-		if(r == 255 && g == 0 && b == 0)
-		{
-			dr = 0; dg = 1; db = 0;
-		}
+        // Convert hue to RGB
+        float r = std::abs(3.f - 6.f * hue) - 1.f;
+        float g = 2.f - std::abs(2.f - 6.f * hue);
+        float b = 2.f - std::abs(4.f - 6.f * hue);
 
-		if(r == 255 && g == 255 && b == 0)
-		{
-			dr = -1; dg = 0; db = 0;
-		}
+        // Normalize the RGB values with clamp and apply them to the full 255 RGB spectrum
+		rect.setFillColor(sf::Color(clamp(r, 0.f, 1.f) * 255, clamp(g, 0.f, 1.f) * 255, clamp(b, 0.f, 1.f) * 255));
 
-		if(r == 0 && g == 255 && b == 0)
-		{
-			dr = 0; dg = 0; db = 1;
-		}
-
-		if(r == 0 && g == 255 && b == 255)
-		{
-			dr = 0; dg = -1; db = 0;
-		}
-
-		if(r == 0 && g == 0 && b == 255)
-		{
-			dr = 1; dg = 0; db = 0;
-		}
-
-		if(r == 255 && g == 0 && b == 255)
-		{
-			dr = 0; dg = 0; db = -1;
-		}
-
-		rect.setFillColor(sf::Color(r, g, b));
-
-		Screen.clear();
-		Screen.draw(rect);
-		Screen.display();
+		window.clear();
+		window.draw(rect);
+		window.display();
 	}
-
-	return 0;
 }
