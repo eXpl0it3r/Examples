@@ -4,7 +4,7 @@ int main()
 {
     // Create window
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML");
-    // Limit framerate
+    // Limit frame-rate
     window.setFramerateLimit(60);
 
     // Keep track of the frametime
@@ -20,7 +20,7 @@ int main()
     box.setPosition(500.f, 480.f);
     box.setFillColor(sf::Color(10, 180, 30));
 
-    // Moveable player
+    // Movable player
     sf::RectangleShape player(sf::Vector2f(40.f, 40.f));
     player.setOrigin(20.f, 20.f);
     player.setPosition(400.f, 40.f);
@@ -37,7 +37,7 @@ int main()
 
     while(window.isOpen())
     {
-        // Get delta time for framerate depended movement
+        // Get delta time for frame-rate depended movement
         float dt = frametime.restart().asSeconds();
 
         // Event handling
@@ -66,7 +66,7 @@ int main()
 
         // Horizontal movement
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            speed.x = 0;
+            speed.x = 0.f;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             speed.x = -120.f;
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
