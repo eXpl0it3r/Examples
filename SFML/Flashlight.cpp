@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 class Application
 {
 public:
     Application() :
         m_window(sf::VideoMode(300, 300), "Flashlight!"),
-        m_flashlightTexture(),
         m_layer(),
         m_rect(sf::Vector2f(100.f, 100.f)),
         m_pos(0.f, 0.f)
@@ -16,24 +16,28 @@ public:
         m_layer.create(300, 300);
         m_flashlightTexture.create(60, 60);
 
+        // We want to have semi-transparent edges.
         generateSpot();
 
         m_flashlight.setTexture(m_flashlightTexture.getTexture(), true);
-        m_flashlight.setPosition(150, 150);
-        m_flashlight.setOrigin(30, 30);
+        m_flashlight.setPosition(150.f, 150.f);
+        m_flashlight.setOrigin(30.f, 30.f);
 
         m_rect.setFillColor(sf::Color::Red);
-        m_rect.setPosition(100, 100);
+        m_rect.setPosition(100.f, 100.f);
+
+        m_sprite.setTexture(m_layer.getTexture());
     }
 
     void generateSpot()
     {
         m_flashlightTexture.clear();
 
-        for(unsigned int i=0; i < 6; ++i)
+        // Draw 6 circles with increasing transparency
+        for(unsigned int i = 0; i < 6; ++i)
         {
-            sf::CircleShape temp(30-(i*2));
-            temp.setOrigin(sf::Vector2f(30-(i*2), 30-(i*2)));
+            sf::CircleShape temp(30.f-(i*2.f));
+            temp.setOrigin(sf::Vector2f(30.f-(i*2.f), 30.f-(i*2.f)));
             temp.setFillColor(sf::Color(255, 255, 255, 61-(i*10)));
             temp.setPosition(sf::Vector2f(30.f, 30.f));
 
@@ -54,17 +58,18 @@ public:
                     m_window.close();
             }
 
+            // Update the position of the 'flashlight' to the current mouse position
             m_pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(m_window));
             m_flashlight.setPosition(m_pos);
 
+            // Stance-out the 'flashlight' circle
             m_layer.clear();
             m_layer.draw(m_flashlight, sf::BlendNone);
             m_layer.display();
 
-            m_sprite.setTexture(m_layer.getTexture());
-
             m_window.clear(sf::Color::Blue);
 
+            // Draw the layer sprite on top of the 'scene'
             m_window.draw(m_rect);
             m_window.draw(m_sprite);
 
