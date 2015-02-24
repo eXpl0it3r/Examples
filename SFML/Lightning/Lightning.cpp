@@ -84,7 +84,6 @@ sf::VertexArray Lightning::line(sf::Vector2f start, sf::Vector2f end, unsigned i
     return line;
 }
 
-
 void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     sf::Vector2f start, end;
@@ -126,4 +125,3 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
             target.draw(line(start, end, t, color), states);
         }
 }
-

@@ -101,4 +101,3 @@ int main()
         window.display();
     }
 }
-
