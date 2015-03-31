@@ -6,6 +6,16 @@ So instead of letting those code fragments go to waste on my computer or in the 
 
 Keep in mind that the code is provided as-is and isn't always suited for final products, since I didn't spend much time thinking about performance or nice code design decisions.
 
+zlib
+====
+
+[gzip Decompression](https://github.com/eXpl0it3r/Examples/blob/master/zlib/GzipDecompression.cpp)
+--------------------
+
+zlib is a small and useful library which allows the compression and decompression of data. By applying some settings it's possible to let zlib decompress a gzip file, which this examples demonstrates by loading a file into memory and output the decompressed data to standard output.
+
+SFML
+====
 
 [Fading Dots](https://github.com/eXpl0it3r/Examples/blob/master/SFML/FadingDots.cpp)
 -------------
