@@ -102,9 +102,9 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
                                     m_color.b - m_fadeColor.b,
                                     m_color.a - m_fadeColor.a);
         colorStep = sf::Color(colorDifference.r / static_cast<sf::Uint8>(m_thickness - 1),
-                            colorDifference.g / static_cast<sf::Uint8>(m_thickness - 1),
-                            colorDifference.b / static_cast<sf::Uint8>(m_thickness - 1),
-                            colorDifference.a / static_cast<sf::Uint8>(m_thickness - 1)); // Increase the fade color by this each iteration.
+                              colorDifference.g / static_cast<sf::Uint8>(m_thickness - 1),
+                              colorDifference.b / static_cast<sf::Uint8>(m_thickness - 1),
+                              colorDifference.a / static_cast<sf::Uint8>(m_thickness - 1)); // Increase the fade color by this each iteration.
     }
 
     float segmentHeight = m_size.y / (m_noSegments - 1.0f);

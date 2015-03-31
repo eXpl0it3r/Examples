@@ -11,23 +11,23 @@ template <typename T> T clamp(const T& value, const T& low, const T& high)
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Hue Shift");
-	window.setFramerateLimit(60); // Limit the frame-rate
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Hue Shift");
+    window.setFramerateLimit(60); // Limit the frame-rate
 
-	sf::RectangleShape rect(sf::Vector2f(350.f, 350.f));
-	rect.setPosition(150, 150);
+    sf::RectangleShape rect(sf::Vector2f(350.f, 350.f));
+    rect.setPosition(150, 150);
 
     // Starting color
-	float hue = 0.f;
+    float hue = 0.f;
 
-	while(window.isOpen())
-	{
-		sf::Event event;
-		while(window.pollEvent(event))
-		{
-			if(event.type == sf::Event::Closed)
+    while(window.isOpen())
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
                 window.close();
-		}
+        }
 
         // Calculate the color
         hue += 0.002f;
@@ -40,10 +40,10 @@ int main()
         float b = 2.f - std::abs(4.f - 6.f * hue);
 
         // Normalize the RGB values with clamp and apply them to the full 255 RGB spectrum
-		rect.setFillColor(sf::Color(clamp(r, 0.f, 1.f) * 255, clamp(g, 0.f, 1.f) * 255, clamp(b, 0.f, 1.f) * 255));
+        rect.setFillColor(sf::Color(clamp(r, 0.f, 1.f) * 255, clamp(g, 0.f, 1.f) * 255, clamp(b, 0.f, 1.f) * 255));
 
-		window.clear();
-		window.draw(rect);
-		window.display();
-	}
+        window.clear();
+        window.draw(rect);
+        window.display();
+    }
 }
