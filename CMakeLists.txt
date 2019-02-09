@@ -8,10 +8,15 @@ OPTION(EXAMPLES_LINK_SFML_STATICALLY "Link SFML libraries statically" ON)
 OPTION(EXAMPLES_BUILD_ZLIB "Build all the ZLIB examples" OFF)
 OPTION(EXAMPLES_LINK_ZLIB_STATICALLY "Link ZLIB library statically" ON)
 
+set (CMAKE_CXX_STANDARD 17)
+
 if(${EXAMPLES_BUILD_SFML})
 	set(SFML_DIR "" CACHE PATH "Path to where SFMLConfig.cmake is located")
 	set(SFML_STATIC_LIBRARIES ${EXAMPLES_LINK_SFML_STATICALLY})
 	find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+
+	add_executable(BasicMovement SFML/BasicMovement.cpp)
+	target_link_libraries(BasicMovement PRIVATE sfml-graphics)
 
 	add_executable(FadingDots SFML/FadingDots.cpp)
 	target_link_libraries(FadingDots PRIVATE sfml-graphics)
