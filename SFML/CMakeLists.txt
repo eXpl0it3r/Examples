@@ -120,3 +120,15 @@ if(WIN32)
 		target_compile_options(SimpleAABB PRIVATE -static)
 	endif()
 endif()
+
+install(TARGETS BasicMovement
+                FadingDots
+				Flashlight
+				HueShift
+				Lightning
+				MixingSoundBuffers
+				Road
+				RotatingTriangle
+				RotatingVertices
+				SimpleAABB
+				RUNTIME DESTINATION .)

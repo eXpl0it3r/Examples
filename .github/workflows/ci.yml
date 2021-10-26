@@ -1,0 +1,67 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: Windows VS2019, os: windows-latest }
+          - { name: Linux GCC, os: ubuntu-latest }
+          - {
+              name: Linux Clang,
+              os: ubuntu-latest,
+              flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++,
+            }
+          - { name: MacOS XCode, os: macos-latest }
+
+    steps:
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
+
+      - name: Examples - Checkout Code
+        uses: actions/checkout@v2
+        with:
+          path: Examples
+
+      - name: SFML - Checkout Code
+        uses: actions/checkout@v2
+        with:
+          repository: SFML/SFML
+          path: SFML
+
+      - name: SFML - Configure CMake
+        shell: bash
+        run: cmake -S $GITHUB_WORKSPACE/SFML -B $GITHUB_WORKSPACE/SFML/build -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/SFML/install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON ${{matrix.platform.flags}}
+
+      - name: SFML - Build
+        shell: bash
+        run: cmake --build $GITHUB_WORKSPACE/SFML/build --config Release --target install
+
+      - name: zlib - Checkout Code
+        uses: actions/checkout@v2
+        with:
+          repository: madler/zlib
+          path: zlib
+
+      - name: zlib - Configure CMake
+        shell: bash
+        run: cmake -S $GITHUB_WORKSPACE/zlib -B $GITHUB_WORKSPACE/zlib/build -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/zlib/install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON ${{matrix.platform.flags}}
+
+      - name: zlib - Build
+        shell: bash
+        run: cmake --build $GITHUB_WORKSPACE/zlib/build --config Release --target install
+
+      - name: Examples - Configure CMake
+        shell: bash
+        run: cmake -S $GITHUB_WORKSPACE/Examples -B $GITHUB_WORKSPACE/Examples/build -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/Examples/install -DCMAKE_VERBOSE_MAKEFILE=ON -DSFML_DIR=$GITHUB_WORKSPACE/SFML/install/lib/cmake/SFML -DZLIB_ROOT=$GITHUB_WORKSPACE/zlib/install -DEXAMPLES_BUILD_SFML=ON -DEXAMPLES_LINK_SFML_STATICALLY=OFF -DEXAMPLES_BUILD_ZLIB=ON -DEXAMPLES_LINK_ZLIB_STATICALLY=OFF -DEXAMPLES_LINK_RUNTIME_STATICALLY=OFF  ${{matrix.platform.flags}}
+
+      - name: Examples - Build
+        shell: bash
+        run: cmake --build $GITHUB_WORKSPACE/Examples/build --config Release --target install
