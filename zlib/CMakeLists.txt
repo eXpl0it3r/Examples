@@ -12,3 +12,5 @@ if(WIN32)
 		target_compile_options(GzipDecompression PRIVATE -static)
 	endif()
 endif()
+
+install(TARGETS GzipDecompression RUNTIME DESTINATION .)
