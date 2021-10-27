@@ -5,7 +5,7 @@ find_package(ZLIB REQUIRED)
 add_executable(GzipDecompression GzipDecompression.cpp)
 target_link_libraries(GzipDecompression PRIVATE ZLIB::ZLIB)
 
-if(WIN32)
+if(WIN32 AND EXAMPLES_LINK_RUNTIME_STATICALLY)
 	if(MSVC)
 		set_property(TARGET GzipDecompression PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 	elseif(CMAKE_COMPILER_IS_GNUCXX)
