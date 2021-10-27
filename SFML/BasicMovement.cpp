@@ -2,10 +2,10 @@
 #include <limits>
 #include <SFML/Graphics.hpp>
 
-sf::Vector2f normalize(sf::Vector2f vector)
+sf::Vector2f normalize(const sf::Vector2f vector)
 {
     constexpr auto units_in_last_place = 2;
-    auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
+    const auto norm = std::sqrt((vector.x * vector.x) + (vector.y * vector.y));
 
     // Prevent division by zero
     if (norm <= std::numeric_limits<float>::epsilon() * norm * units_in_last_place
@@ -19,14 +19,13 @@ sf::Vector2f normalize(sf::Vector2f vector)
 
 int main()
 {
-    auto window = sf::RenderWindow{ {1280u, 720u}, "Example: Basic Movement" };
+    auto window = sf::RenderWindow{ { 1280u, 720u }, "Example: Basic Movement" };
     window.setFramerateLimit(60);
 
-    auto moving_rectangle = sf::RectangleShape{ {64.f, 64.f} };
-    moving_rectangle.setFillColor(sf::Color{ 100, 200, 150 });
+    auto moving_rectangle = sf::RectangleShape{ { 64.f, 64.f } };
+    moving_rectangle.setFillColor({ 100, 200, 150 });
 
     auto direction_vector = sf::Vector2f{ 0.f, 0.f };
-    auto velocity = 100.f;
     auto frame_clock = sf::Clock{};
 
     enum Directions
@@ -37,11 +36,12 @@ int main()
         DOWN = 3,
     };
 
-    auto key_states = std::vector<bool>(4, false);
+    auto key_states = std::vector(4, false);
 
     while (window.isOpen())
     {
-        auto frame_time = frame_clock.restart();
+	    auto velocity = 200.f;
+	    auto frame_time = frame_clock.restart();
 
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {

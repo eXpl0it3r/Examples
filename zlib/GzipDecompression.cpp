@@ -1,4 +1,4 @@
-#define ZLIB_CONST // const char*
+#define ZLIB_CONST
 #include <zlib.h>
 #include <zconf.h>
 
@@ -9,7 +9,7 @@
 
 bool gzip_inflate(const std::string& compressed_bytes, std::string& uncompressed_bytes)
 {
-    if(compressed_bytes.size() == 0)
+    if (compressed_bytes.size() == 0)
     {
         uncompressed_bytes = compressed_bytes;
         return true;
@@ -17,41 +17,47 @@ bool gzip_inflate(const std::string& compressed_bytes, std::string& uncompressed
 
     uncompressed_bytes.clear();
 
-    unsigned full_length = compressed_bytes.size();
+    auto full_length = compressed_bytes.size();
 
-    std::vector<char> uncomp(full_length, 0);
+    auto uncompressed = std::vector<char>(full_length, 0);
 
-    z_stream strm;
+    auto strm = z_stream{};
     strm.next_in = reinterpret_cast<z_const Bytef*>(compressed_bytes.data());
     strm.avail_in = compressed_bytes.size();
     strm.total_out = 0;
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
 
-    if(inflateInit2(&strm, (16 + MAX_WBITS)) != Z_OK)
-        return false;
-
-    int ret = Z_OK;
-
-    while(ret == Z_OK)
+    if (inflateInit2(&strm, (16 + MAX_WBITS)) != Z_OK)
     {
-        // If the output buffer is too small
-        if(strm.total_out >= uncomp.size())
-            uncomp.resize((uncomp.size() * 3) / 2 + 1, 0);
-
-        strm.next_out = reinterpret_cast<Bytef*>(uncomp.data() + strm.total_out);
-        strm.avail_out = uncomp.size() - strm.total_out;
-
-        // Inflate another chunk.
-        ret = inflate(&strm, Z_SYNC_FLUSH);
+	    return false;
     }
 
-    if(inflateEnd(&strm) != Z_OK)
-        return false;
+    auto result = Z_OK;
 
-    for(std::size_t i = 0; i < strm.total_out; ++i)
+    while (result == Z_OK)
     {
-        uncompressed_bytes += uncomp[i];
+        // If the output buffer is too small
+        if (strm.total_out >= uncompressed.size())
+        {
+            uncompressed.resize((uncompressed.size() * 3) / 2 + 1, 0);
+        }
+
+        strm.next_out = reinterpret_cast<Bytef*>(uncompressed.data() + strm.total_out);
+        strm.avail_out = uncompressed.size() - strm.total_out;
+
+        // Inflate another chunk.
+        result = inflate(&strm, Z_SYNC_FLUSH);
+    }
+
+    if (inflateEnd(&strm) != Z_OK)
+    {
+	    return false;
+    }
+
+    for (auto i = std::size_t{ 0 }; i < strm.total_out; ++i)
+    {
+        uncompressed_bytes += uncompressed[i];
     }
 
     return true;
@@ -61,17 +67,19 @@ bool gzip_inflate(const std::string& compressed_bytes, std::string& uncompressed
 bool load_binary_file(const std::string& filename, std::string& contents)
 {
     // Open the gzip file in binary mode
-    std::fstream file(filename, std::ios::binary | std::ios::in);
+    auto file = std::fstream{ filename, std::ios::binary | std::ios::in };
 
-    if(!file.is_open())
-        return false;
+    if (!file.is_open())
+    {
+	    return false;
+    }
 
     contents.clear();
 
     // Read all the bytes in the file
     char buffer[1024] = {0};
 
-    while(file.read(buffer, 1024))
+    while (file.read(buffer, 1024))
     {
         contents.append(buffer, file.gcount());
     }
@@ -82,26 +90,24 @@ bool load_binary_file(const std::string& filename, std::string& contents)
 int main()
 {
     // Read the gzip file data into memory
-    std::string file_data;
-    if(!load_binary_file("test.gz", file_data))
+    auto file_data = std::string{};
+    if (!load_binary_file("test.gz", file_data))
     {
         std::cout << "Error loading input file." << std::endl;
         return 1;
     }
 
     // Uncompress the file data
-    std::string data;
-    if(!gzip_inflate(file_data, data))
+    auto data = std::string{};
+    if (!gzip_inflate(file_data, data))
     {
         std::cout << "Error decompressing file." << std::endl;
         return 1;
     }
 
     // Print the data
-    for(std::size_t i = 0; i < data.size(); ++i)
+    for (auto i = std::size_t{ 0 }; i < data.size(); ++i)
     {
         std::cout << data[i];
     }
-
-    return 0;
 }

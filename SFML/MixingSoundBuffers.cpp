@@ -1,47 +1,69 @@
-#include <SFML/Config.hpp>
 #include <SFML/Audio.hpp>
 
-#include <cmath> // max
+#include <algorithm>
 #include <cstdint>
+#include <iostream>
 #include <vector>
 
 int main()
 {
-    sf::SoundBuffer buffer1, buffer2;
-    buffer1.loadFromFile("test1.wav");
-    buffer2.loadFromFile("test2.wav");
+    auto buffer1 = sf::SoundBuffer{};
+	auto buffer2 = sf::SoundBuffer{};
 
-    unsigned int ch = 2; // Both buffers need to have the same channel count
-    unsigned int rate = 44100; // Both buffers need to have the same sample rate
-    std::size_t size = std::max(buffer1.getSampleCount(), buffer2.getSampleCount());
-
-    std::vector<sf::Int16> samples(size, 0);
-
-    for(std::size_t i = 0; i < size; ++i)
+    if (!buffer1.loadFromFile("test1.wav"))
     {
-        sf::Int16 b1 = 0, b2 = 0;
-        if(i < buffer1.getSampleCount())
-            b1 = buffer1.getSamples()[i];
-        if(i < buffer2.getSampleCount())
-            b2 = buffer2.getSamples()[i];
-
-        // Mixing
-        if(b1 < 0 && b2 < 0)
-            samples[i] = (b1 + b2) - static_cast<sf::Int16>((b1 * b2) / INT16_MIN);
-        else if(b1 > 0 && b2 > 0)
-            samples[i] = (b1 + b2) - static_cast<sf::Int16>((b1 * b2) / INT16_MAX);
-        else
-            samples[i] = b1 + b2;
+        std::cout << "Unable to open test1.wav\n";
+        return 1;
+    }
+    if (!buffer2.loadFromFile("test2.wav"))
+    {
+        std::cout << "Unable to open test2.wav\n";
+        return 1;
     }
 
-    sf::SoundBuffer buffer;
-    buffer.loadFromSamples(samples.data(), samples.size(), ch, rate);
+    constexpr auto channels = 2U; // Both buffers need to have the same channel count
+    constexpr auto rate = 44100U; // Both buffers need to have the same sample rate
+    const auto size = std::max(buffer1.getSampleCount(), buffer2.getSampleCount());
 
-    sf::Sound sound(buffer);
+    auto samples = std::vector<sf::Int16>(size, 0);
+
+    for (auto i = std::size_t{ 0 }; i < size; ++i)
+    {
+        auto b1 = sf::Int16{ 0 };
+        auto b2 = sf::Int16{ 0 };
+
+        if (i < buffer1.getSampleCount())
+        {
+	        b1 = buffer1.getSamples()[i];
+        }
+        if (i < buffer2.getSampleCount())
+        {
+	        b2 = buffer2.getSamples()[i];
+        }
+
+        // Mixing
+        if (b1 < 0 && b2 < 0)
+        {
+	        samples[i] = static_cast<sf::Int16>((b1 + b2) - static_cast<sf::Int16>((b1 * b2) / INT16_MIN));
+        }
+        else if (b1 > 0 && b2 > 0)
+        {
+	        samples[i] = static_cast<sf::Int16>((b1 + b2) - static_cast<sf::Int16>((b1 * b2) / INT16_MAX));
+        }
+        else
+        {
+	        samples[i] = static_cast<sf::Int16>(b1 + b2);
+        }
+    }
+
+    auto buffer = sf::SoundBuffer{};
+    buffer.loadFromSamples(samples.data(), samples.size(), channels, rate);
+
+    auto sound = sf::Sound{ buffer };
     sound.play();
 
-    while(sound.getStatus() == sf::Sound::Playing)
+    while (sound.getStatus() == sf::Sound::Playing)
     {
-        // Wait
+        sf::sleep(sf::seconds(0.5f));
     }
 }
