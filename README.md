@@ -68,6 +68,14 @@ adapted it for SFML 2 and made a nicer class out of it.
 
 ![Lightning](https://i.imgur.com/XJdze9h.png)
 
+### [Mixing SoundBuffers](https://github.com/eXpl0it3r/Examples/blob/master/SFML/MixingSoundBuffers.cpp)
+
+The other day in #learnprogramming on freenode someone was trying to implement a way to mix two
+audio files without actually playing them back. I wondered how something like that would work with
+SFML and thus went ahead an wrote a small example. A quick Google search on audio sample mixing
+brought me to [this site](https://atastypixel.com/how-to-mix-audio-samples-properly-on-ios/)
+and lead me to the current implementation.
+
 ### [Road](https://github.com/eXpl0it3r/Examples/blob/master/SFML/Road.cpp)
 
 I'm not sure if there ever existed a forum post or if the whole conversation happened on IRC,
@@ -81,18 +89,17 @@ when adapting it.
 
 Every month there's at least one question on simple collision detection testing the last 'bigger'
 one with in [this forum thread](https://en.sfml-dev.org/forums/index.php?topic=9352.0), which
-lead to this example. I've even implemented some _very_ simple physics, which will fail in most
+lead to this example. I've even implemented some *very* simple physics, which will fail in most
 situations, but you can at least move around and jump.
 
 ![AABB](https://i.imgur.com/imYEzXa.png)
 
-### [Mixing SoundBuffers](https://github.com/eXpl0it3r/Examples/blob/master/SFML/MixingSoundBuffers.cpp)
+### [Sound Recording](https://github.com/eXpl0it3r/Examples/blob/master/SFML/SoundRecording.cpp)
 
-The other day in #learnprogramming on freenode someone was trying to implement a way to mix two
-audio files without actually playing them back. I wondered how something like that would work with
-SFML and thus went ahead an wrote a small example. A quick Google search on audio sample mixing
-brought me to [this site](https://atastypixel.com/how-to-mix-audio-samples-properly-on-ios/)
-and lead me to the current implementation.
+Even though SFML has a [tutorial](https://www.sfml-dev.org/tutorials/2.5/audio-recording.php)
+and an [example](https://github.com/SFML/SFML/tree/master/examples/sound_capture) on sound
+recording, I wanted to have my own small demonstration of said feature with recording device
+selection and mono/stereo options.
 
 ## License
 

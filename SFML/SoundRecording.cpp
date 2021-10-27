@@ -5,18 +5,18 @@ int main()
 {
     if (!sf::SoundBufferRecorder::isAvailable())
     {
-        std::cerr << "No recording device availalbe!\n";
+        std::cerr << "No recording device available!\n";
         return 1;
     }
 
-    auto recorders = sf::SoundRecorder::getAvailableDevices();
+    const auto recorders = sf::SoundRecorder::getAvailableDevices();
 
-    for(std::size_t i = 0; i < recorders.size(); ++i)
+    for (auto i = std::size_t{ 0 }; i < recorders.size(); ++i)
     {
         std::cout << (i + 1) << "\t" << recorders[i] << "\n";
     }
 
-    std::size_t option = 0;
+    auto option = 0U;
 
     while(option <= 0 || option > recorders.size())
     {
@@ -25,7 +25,7 @@ int main()
     }
     std::cin.ignore();
 
-    sf::SoundBufferRecorder recorder;
+    auto recorder = sf::SoundBufferRecorder{};
     recorder.setDevice(recorders[option - 1]);
 
     option = 0;
@@ -51,7 +51,7 @@ int main()
 
     std::cout << "Recording stopped!\n";
 
-    sf::SoundBuffer buffer = recorder.getBuffer();
+    const auto buffer = recorder.getBuffer();
 
     std::cout << "Recording properties:\n";
     std::cout << "\tSample Count:\t" << buffer.getSampleCount() << "\n";
@@ -59,7 +59,7 @@ int main()
     std::cout << "\tChannel Count:\t" << buffer.getChannelCount() << "\n";
     std::cout << "\tDuration:\t" << buffer.getDuration().asSeconds() << "s\n";
 
-    sf::Sound sound(buffer);
+    auto sound = sf::Sound{ buffer };
     sound.play();
 
     std::cout << "Playing it back...\n";
@@ -69,7 +69,7 @@ int main()
         sf::sleep(sf::seconds(0.5f));
     }
 
-    char choice = 0;
+    auto choice = char{ 0 };
 
     while(choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')
     {
@@ -80,10 +80,13 @@ int main()
 
     if(choice == 'y' || choice == 'Y')
     {
-        buffer.saveToFile("buffer.wav");
+        if (!buffer.saveToFile("buffer.wav"))
+        {
+            std::cout << "Failed to save audio to buffer.wav\n";
+        }
     }
 
-    std::cout << "Good Bye!\n";
+    std::cout << "Goodbye!\n";
     std::cout << "Press ENTER to exit...";
     std::cin.ignore();
 }

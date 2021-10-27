@@ -121,6 +121,19 @@ if(WIN32)
 	endif()
 endif()
 
+
+add_executable(SoundRecording SoundRecording.cpp)
+target_link_libraries(SoundRecording PRIVATE sfml-audio)
+
+if(WIN32)
+	if(MSVC)
+		set_property(TARGET SoundRecording PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+	elseif(CMAKE_COMPILER_IS_GNUCXX)
+		target_compile_options(SoundRecording PRIVATE -static)
+	endif()
+endif()
+
+
 install(TARGETS BasicMovement
                 FadingDots
 				Flashlight
@@ -131,4 +144,5 @@ install(TARGETS BasicMovement
 				RotatingTriangle
 				RotatingVertices
 				SimpleAABB
+				SoundRecording
 				RUNTIME DESTINATION .)
