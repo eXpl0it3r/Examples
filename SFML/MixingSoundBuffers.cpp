@@ -21,8 +21,14 @@ int main()
         return 1;
     }
 
-    constexpr auto channels = 2U; // Both buffers need to have the same channel count
-    constexpr auto rate = 44100U; // Both buffers need to have the same sample rate
+    if (buffer1.getChannelCount() != buffer2.getChannelCount() || buffer1.getSampleRate() != buffer2.getSampleRate())
+    {
+        std::cout << "Both buffers must have the same channel count and sample rate\n";
+        return 1;
+    }
+
+    const auto channels = buffer1.getChannelCount();
+    const auto rate = buffer1.getSampleRate();
     const auto size = std::max(buffer1.getSampleCount(), buffer2.getSampleCount());
 
     auto samples = std::vector<sf::Int16>(size, 0);

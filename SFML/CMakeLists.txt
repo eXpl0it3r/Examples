@@ -14,6 +14,18 @@ if(WIN32 AND EXAMPLES_LINK_RUNTIME_STATICALLY)
 endif()
 
 
+add_executable(CenterText CenterText.cpp)
+target_link_libraries(CenterText PRIVATE sfml-graphics)
+
+if(WIN32 AND EXAMPLES_LINK_RUNTIME_STATICALLY)
+	if(MSVC)
+		set_property(TARGET CenterText PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+	elseif(CMAKE_COMPILER_IS_GNUCXX)
+		target_compile_options(CenterText PRIVATE -static)
+	endif()
+endif()
+
+
 add_executable(FadingDots FadingDots.cpp)
 target_link_libraries(FadingDots PRIVATE sfml-graphics)
 
@@ -135,6 +147,7 @@ endif()
 
 
 install(TARGETS BasicMovement
+				CenterText
                 FadingDots
 				Flashlight
 				HueShift
@@ -146,3 +159,5 @@ install(TARGETS BasicMovement
 				SimpleAABB
 				SoundRecording
 				RUNTIME DESTINATION .)
+
+install(DIRECTORY Resources/ DESTINATION .)
