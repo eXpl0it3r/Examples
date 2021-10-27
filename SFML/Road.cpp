@@ -5,49 +5,52 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Road");
+    auto window = sf::RenderWindow{ { 1024, 768 }, "Road" };
     window.setFramerateLimit(60);
 
-    sf::RectangleShape grass(sf::Vector2f(262.f, 768.f));
-    grass.setFillColor(sf::Color(0, 100, 0));
+    auto grass = sf::RectangleShape{ { 262.f, 768.f } };
+    grass.setFillColor({ 0, 100, 0 });
 
-    sf::RectangleShape road(sf::Vector2f(500.f, 768.f));
-    road.setFillColor(sf::Color(50, 50, 50));
-    road.setPosition(262.f, 0.f);
+    auto road = sf::RectangleShape{ { 500.f, 768.f } };
+    road.setFillColor({ 50, 50, 50 });
+    road.setPosition({ 262.f, 0.f });
 
-    const float HEIGHT = 70.f;
-    const unsigned int STRIPES_COUNT = 7;
+    const auto HEIGHT = 70.f;
+    const auto STRIPES_COUNT = 7U;
 
-    sf::RectangleShape greyLight(sf::Vector2f(1024.f, HEIGHT));
-    greyLight.setFillColor(sf::Color(50, 50, 50, 20));
+    auto greyLight = sf::RectangleShape{ { 1024.f, HEIGHT } };
+    greyLight.setFillColor({ 50, 50, 50, 20 });
 
-    sf::RectangleShape greyDark(sf::Vector2f(1024.f, HEIGHT));
-    greyDark.setFillColor(sf::Color(50, 50, 50, 50));
+    auto greyDark = sf::RectangleShape{ { 1024.f, HEIGHT } };
+    greyDark.setFillColor({ 50, 50, 50, 50 });
 
-    sf::RectangleShape stripeWhite(sf::Vector2f(14.f, HEIGHT));
+    auto stripeWhite = sf::RectangleShape{ { 14.f, HEIGHT } };
     stripeWhite.setFillColor(sf::Color::White);
 
-    sf::RectangleShape stripeRed(sf::Vector2f(14.f, HEIGHT));
+    auto stripeRed = sf::RectangleShape{ { 14.f, HEIGHT } };
     stripeRed.setFillColor(sf::Color::Red);
 
-    sf::Clock animation;
-    float moved = 0.f;
+    auto animation = sf::Clock{};
+    auto moved = 0.f;
 
-    while(window.isOpen())
+    while (window.isOpen())
     {
-        if(animation.getElapsedTime().asMilliseconds() > 10)
+        if (animation.getElapsedTime().asMilliseconds() > 10)
         {
             animation.restart();
             moved += 5.f;
-            if(moved > HEIGHT*2)
-                moved = 0.f;
+            if (moved > HEIGHT*2)
+            {
+	            moved = 0.f;
+            }
         }
 
-        sf::Event event;
-        while(window.pollEvent(event))
+        for (auto event = sf::Event{}; window.pollEvent(event);)
         {
-            if(event.type == sf::Event::Closed)
-                window.close();
+            if (event.type == sf::Event::Closed)
+            {
+	            window.close();
+            }
         }
 
         window.clear();
@@ -60,45 +63,45 @@ int main()
 
         window.draw(road);
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            stripeWhite.setPosition(262.f, (moved+i*HEIGHT*2)-HEIGHT*2);
+            stripeWhite.setPosition({ 262.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - (HEIGHT * 2) });
             window.draw(stripeWhite);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            stripeRed.setPosition(262.f, (moved+i*HEIGHT*2)-HEIGHT);
+            stripeRed.setPosition({ 262.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - HEIGHT });
             window.draw(stripeRed);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            stripeWhite.setPosition(504.f, (moved+i*HEIGHT*2)-HEIGHT);
+            stripeWhite.setPosition({ 504.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - HEIGHT });
             window.draw(stripeWhite);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            stripeWhite.setPosition(748.f, (moved+i*HEIGHT*2)-HEIGHT*2);
+            stripeWhite.setPosition({ 748.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - (HEIGHT * 2) });
             window.draw(stripeWhite);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            stripeRed.setPosition(748.f, (moved+i*HEIGHT*2)-HEIGHT);
+            stripeRed.setPosition({ 748.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - HEIGHT });
             window.draw(stripeRed);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0U; i < STRIPES_COUNT; ++i)
         {
-            greyLight.setPosition(0.f, (moved+i*HEIGHT*2)-HEIGHT*2);
+            greyLight.setPosition({ 0.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - (HEIGHT * 2) });
             window.draw(greyLight);
         }
 
-        for(unsigned int i = 0; i < STRIPES_COUNT; ++i)
+        for (auto i = 0; i < STRIPES_COUNT; ++i)
         {
-            greyDark.setPosition(0.f, (moved+i*HEIGHT*2)-HEIGHT);
+            greyDark.setPosition({ 0.f, (moved + (static_cast<float>(i) * HEIGHT * 2)) - HEIGHT });
             window.draw(greyDark);
         }
 

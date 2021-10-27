@@ -3,7 +3,7 @@
 
 static constexpr auto PI = 3.14159265359f;
 
-static constexpr float to_degree(float radian)
+static constexpr float to_degree(const float radian)
 {
 	return radian * (180.f / PI);
 }

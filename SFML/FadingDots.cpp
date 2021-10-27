@@ -1,50 +1,55 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 #include <list>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "Fading Dots");
+    auto window = sf::RenderWindow{ { 500, 500 }, "Fading Dots" };
     window.setFramerateLimit(60);
 
-    sf::Vector2f old_pos(0.f, 0.f);
-    const int STEP = 1;
+    auto old_position = sf::Vector2f{ 0.f, 0.f };
+    const auto STEP = 1;
 
-    std::list<sf::CircleShape> points;
+    auto points = std::list<sf::CircleShape>{};
 
-    while(window.isOpen())
+    while (window.isOpen())
     {
-        sf::Event event;
-        while(window.pollEvent(event))
+        for (auto event = sf::Event{}; window.pollEvent(event);)
         {
-            if(event.type == sf::Event::Closed)
-                window.close();
+            if (event.type == sf::Event::Closed)
+            {
+	            window.close();
+            }
         }
 
         // Check if the mouse has moved
-        sf::Vector2f pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-        if(pos != old_pos)
+        auto position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        if (position != old_position)
         {
             // Create and add a new circle to the points list.
-            sf::CircleShape cs;
-            cs.setRadius(10.f);
-            cs.setPosition(pos);
-            cs.setFillColor(sf::Color::Red);
-            points.push_back(cs);
+            auto circle_shape = sf::CircleShape{ 10.f };
+            circle_shape.setRadius(10.f);
+            circle_shape.setPosition(position);
+            circle_shape.setFillColor(sf::Color::Red);
+            points.push_back(circle_shape);
 
-            old_pos = pos;
+            old_position = position;
         }
 
         window.clear();
 
-        for(auto it = points.begin(); it != points.end(); ++it)
+        for (auto it = points.begin(); it != points.end(); ++it)
         {
             window.draw(*it);
-            if(it->getFillColor().a-STEP < 0) // When the transparency falls below zero (= invisible) then erase the dot.
-                it = points.erase(it);
+
+            if (it->getFillColor().a - STEP < 0) // When the transparency falls below zero (= invisible) then erase the dot.
+            {
+	            it = points.erase(it);
+            }
             else // Otherwise draw it with a increasing green touch (turns yellowish).
-                it->setFillColor(sf::Color(255, it->getFillColor().g+STEP, 0, it->getFillColor().a-STEP));
+            {
+                it->setFillColor({ 255, static_cast<sf::Uint8>(it->getFillColor().g + STEP), 0, static_cast<sf::Uint8>(it->getFillColor().a - STEP) });
+            }
         }
 
         window.display();

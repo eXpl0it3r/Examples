@@ -18,7 +18,7 @@ int main()
 
     auto option = 0U;
 
-    while(option <= 0 || option > recorders.size())
+    while (option <= 0 || option > recorders.size())
     {
         std::cout << "Pick your recording device: ";
         std::cin >> option;
@@ -30,7 +30,7 @@ int main()
 
     option = 0;
 
-    while(option <= 0 || option > 3)
+    while (option <= 0 || option > 3)
     {
         std::cout << "Do you want to record Mono (1) or Stereo (2): ";
         std::cin >> option;
@@ -64,21 +64,21 @@ int main()
 
     std::cout << "Playing it back...\n";
 
-    while(sound.getStatus() == sf::Sound::Playing)
+    while (sound.getStatus() == sf::Sound::Playing)
     {
         sf::sleep(sf::seconds(0.5f));
     }
 
     auto choice = char{ 0 };
 
-    while(choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')
+    while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')
     {
         std::cout << "Do you want to save it to file (y/n): ";
         std::cin >> choice;
     }
     std::cin.ignore();
 
-    if(choice == 'y' || choice == 'Y')
+    if (choice == 'y' || choice == 'Y')
     {
         if (!buffer.saveToFile("buffer.wav"))
         {

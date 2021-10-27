@@ -1,14 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
 
 class Application
 {
 public:
     Application() :
-        m_window(sf::VideoMode(300, 300), "Flashlight!"),
-        m_layer(),
-        m_rect(sf::Vector2f(100.f, 100.f)),
-        m_pos(0.f, 0.f)
+        m_window{ { 300, 300 }, "Flashlight!" },
+        m_rectangle{ { 100.f, 100.f } },
+        m_position{ 0.f, 0.f }
     {
         m_window.setFramerateLimit(60);
         m_window.setMouseCursorVisible(false);
@@ -20,11 +18,11 @@ public:
         generateSpot();
 
         m_flashlight.setTexture(m_flashlightTexture.getTexture(), true);
-        m_flashlight.setPosition(150.f, 150.f);
-        m_flashlight.setOrigin(30.f, 30.f);
+        m_flashlight.setPosition({ 150.f, 150.f });
+        m_flashlight.setOrigin({ 30.f, 30.f });
 
-        m_rect.setFillColor(sf::Color::Red);
-        m_rect.setPosition(100.f, 100.f);
+        m_rectangle.setFillColor(sf::Color::Red);
+        m_rectangle.setPosition({ 100.f, 100.f });
 
         m_sprite.setTexture(m_layer.getTexture());
     }
@@ -34,12 +32,14 @@ public:
         m_flashlightTexture.clear();
 
         // Draw 6 circles with increasing transparency
-        for(unsigned int i = 0; i < 6; ++i)
+        for (auto i = 0; i < 6; ++i)
         {
-            sf::CircleShape temp(30.f-(i*2.f));
-            temp.setOrigin(sf::Vector2f(30.f-(i*2.f), 30.f-(i*2.f)));
-            temp.setFillColor(sf::Color(255, 255, 255, 61-(i*10)));
-            temp.setPosition(sf::Vector2f(30.f, 30.f));
+	        const auto index = static_cast<float>(i);
+
+            auto temp = sf::CircleShape{ 30.f - (index * 2.f) };
+            temp.setOrigin({ 30.f - (index * 2.f), 30.f - (index * 2.f) });
+            temp.setFillColor({ 255, 255, 255, static_cast<sf::Uint8>(61 - (i * 10)) });
+            temp.setPosition({ 30.f, 30.f });
 
             m_flashlightTexture.draw(temp, sf::BlendNone);
         }
@@ -49,18 +49,19 @@ public:
 
     void run()
     {
-        while(m_window.isOpen())
+        while (m_window.isOpen())
         {
-            sf::Event event;
-            while(m_window.pollEvent(event))
+            for (auto event = sf::Event{}; m_window.pollEvent(event);)
             {
-                if(event.type == sf::Event::Closed)
-                    m_window.close();
+                if (event.type == sf::Event::Closed)
+                {
+	                m_window.close();
+                }
             }
 
             // Update the position of the 'flashlight' to the current mouse position
-            m_pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(m_window));
-            m_flashlight.setPosition(m_pos);
+            m_position = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
+            m_flashlight.setPosition(m_position);
 
             // Stance-out the 'flashlight' circle
             m_layer.clear();
@@ -70,7 +71,7 @@ public:
             m_window.clear(sf::Color::Blue);
 
             // Draw the layer sprite on top of the 'scene'
-            m_window.draw(m_rect);
+            m_window.draw(m_rectangle);
             m_window.draw(m_sprite);
 
             m_window.display();
@@ -81,14 +82,14 @@ private:
     sf::RenderWindow m_window;
     sf::RenderTexture m_flashlightTexture;
     sf::RenderTexture m_layer;
-    sf::RectangleShape m_rect;
+    sf::RectangleShape m_rectangle;
     sf::Sprite m_flashlight;
     sf::Sprite m_sprite;
-    sf::Vector2f m_pos;
+    sf::Vector2f m_position;
 };
 
 int main()
 {
-    Application app;
+    auto app = Application{};
     app.run();
 }
