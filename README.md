@@ -18,21 +18,15 @@ demonstrates by loading a file into memory and output the decompressed data to s
 
 ## SFML
 
-### [Rotating Triangle](https://github.com/eXpl0it3r/Examples/blob/master/SFML/RotatingTriangle.cpp)
+### [Center Text](https://github.com/eXpl0it3r/Examples/blob/master/SFML/CenterText.cpp)
 
-One of the age old questions by game development beginners is along the lines of "How do I rotate
-my player to face X?". This short example answers that question, by rotating a triangle
-(`sf::CircleShape` with three points) to wherever the mouse pointer is on the window.
+One of the most common questions you'll run into on the SFML forum is how to center a `sf::Text`
+object inside a shape, or more commonly, a button. Because `sf::Text` aligns itself to the baseline
+instead of the visual top/bottom, it tends to be more confusing that working with shapes and
+sprites. In order to get it working properly, you have to take into account the `LocalBounds` as
+is shown in the given example.
 
-![Rotating Triangle](https://i.imgur.com/ntONvU2.png)
-
-### [Rotating Vertices](https://github.com/eXpl0it3r/Examples/blob/master/SFML/RotatingVertices.cpp)
-
-This example answers the same question as the 'Rotating Triangle' one, but it uses a `sf::VertexArray`
-in combination with a `sf::Transformable`. It's a good foundation to see how one could start to
-implement an entity class deriving from `sf::Transformable` and `sf::Drawable`.
-
-![Rotating Vertices](https://i.imgur.com/cvmMryW.png)
+![Center Text](https://i.imgur.com/J1xQNzm.png)
 
 ### [Fading Dots](https://github.com/eXpl0it3r/Examples/blob/master/SFML/FadingDots.cpp)
 
@@ -57,6 +51,8 @@ Although I can't find the original SFML thread about this, I found the
 which was IIRC created before the forum thread. This effect can definitely give a nice ambiance,
 but it probably could need some retouching. Since the picture do not tell much: Starting off with
 one color the example automatically iterates through the whole RGB color spectrum in a smooth way.
+
+![Hue Shift](https://i.imgur.com/3PSekfp.gif)
 
 ### [Lightning](https://github.com/eXpl0it3r/Examples/tree/master/SFML/Lightning)
 
@@ -85,11 +81,27 @@ when adapting it.
 
 ![Road](https://i.imgur.com/3dtHMNk.png)
 
+### [Rotating Triangle](https://github.com/eXpl0it3r/Examples/blob/master/SFML/RotatingTriangle.cpp)
+
+One of the age old questions by game development beginners is along the lines of "How do I rotate
+my player to face X?". This short example answers that question, by rotating a triangle
+(`sf::CircleShape` with three points) to wherever the mouse pointer is on the window.
+
+![Rotating Triangle](https://i.imgur.com/ntONvU2.png)
+
+### [Rotating Vertices](https://github.com/eXpl0it3r/Examples/blob/master/SFML/RotatingVertices.cpp)
+
+This example answers the same question as the 'Rotating Triangle' one, but it uses a `sf::VertexArray`
+in combination with a `sf::Transformable`. It's a good foundation to see how one could start to
+implement an entity class deriving from `sf::Transformable` and `sf::Drawable`.
+
+![Rotating Vertices](https://i.imgur.com/cvmMryW.png)
+
 ### [Simple AABB](https://github.com/eXpl0it3r/Examples/blob/master/SFML/SimpleAABB.cpp)
 
 Every month there's at least one question on simple collision detection testing the last 'bigger'
 one with in [this forum thread](https://en.sfml-dev.org/forums/index.php?topic=9352.0), which
-lead to this example. I've even implemented some *very* simple physics, which will fail in most
+lead to this example. I've even implemented some _very_ simple physics, which will fail in most
 situations, but you can at least move around and jump.
 
 ![AABB](https://i.imgur.com/imYEzXa.png)
