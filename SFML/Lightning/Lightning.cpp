@@ -16,7 +16,7 @@ void Lightning::generate()
 
 	m_segments.push_back(0.f); // The start point of the lightning is centered
 
-	for (auto c = 1UL; c < m_numberOfSegments - 1; ++c)
+	for (auto c = std::size_t{ 1u }; c < m_numberOfSegments - 1u; ++c)
 	{
 		m_segments.push_back(rand(-1.f, 1.f));
 	}
@@ -61,15 +61,15 @@ float Lightning::rand(const float low, const float high)
 
 sf::VertexArray Lightning::line(const sf::Vector2f start, const sf::Vector2f end, const unsigned int thickness, const sf::Color color)
 {
-    auto line = sf::VertexArray{ sf::Lines, std::size_t{ 2 } *thickness };
-    for (auto i = std::size_t{ 0 }; i < std::size_t{ 2 } * thickness; i += 2)
+    auto line = sf::VertexArray{ sf::Lines, std::size_t{ 2u } * thickness };
+    for (auto i = std::size_t{ 0u }; i < std::size_t{ 2u } * thickness; i += 2u)
     {
         line[i].position = start;
         line[i].position.x += static_cast<float>(i) / 2.f;
         line[i].color = color;
-        line[i + 1].position = end;
-        line[i + 1].position.x += static_cast<float>(i) / 2.f;
-        line[i + 1].color = color;
+        line[i + 1u].position = end;
+        line[i + 1u].position.x += static_cast<float>(i) / 2.f;
+        line[i + 1u].color = color;
     }
 
     return line;
@@ -81,7 +81,7 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	auto colorStep = sf::Color{};
 
     // If the thickness is 1.0 then draw using only the main color. Otherwise calculate the amount to fade the fade color each iteration
-    if (m_thickness == 1)
+    if (m_thickness == 1u)
     {
 	    color = m_color;
     }
@@ -107,12 +107,12 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
     states.transform *= getTransform();
 
     // Draw multiple lightnings, decreasing the thickness by 1.0 until we reach thickness 1.0 (or less)
-    for (auto t = m_thickness; t >= 1; --t, color += colorStep)
+    for (auto t = m_thickness; t >= 1u; --t, color += colorStep)
     {
-        for (auto c = std::size_t{ 0 }; c < m_numberOfSegments - 1; ++c)
+        for (auto c = std::size_t{ 0u }; c < m_numberOfSegments - 1; ++c)
 	    {
 	    	const auto start = sf::Vector2f{ m_segments[c] * (halfWidth - halfThickness) + halfWidth, segmentHeight * static_cast<float>(c) };
-	    	const auto end = sf::Vector2f{ m_segments[c + 1] * (halfWidth - halfThickness) + halfWidth, segmentHeight * static_cast<float>(c + 1) };
+	    	const auto end = sf::Vector2f{ m_segments[c + 1u] * (halfWidth - halfThickness) + halfWidth, segmentHeight * static_cast<float>(c + 1u) };
 
 	    	target.draw(line(start, end, t, color), states);
 	    }

@@ -3,34 +3,34 @@
 int main()
 {
     // Create window
-    auto window = sf::RenderWindow{ { 800U, 600U }, "Simple AABB" };
+    auto window = sf::RenderWindow{ { 800u, 600u }, "Simple AABB" };
     // Limit frame-rate
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(60u);
 
-    // Keep track of the frametime
-    auto frametime = sf::Clock{};
+    // Keep track of the frame time
+    auto frameTime = sf::Clock{};
 
     // Big floor
     auto floor = sf::RectangleShape{ { 800.f, 40.f } };
     floor.setPosition({ 0.f, 560.f });
-    floor.setFillColor({ 10, 180, 30 });
+    floor.setFillColor({ 10u, 180u, 30u });
 
     // Small box
     auto box = sf::RectangleShape{ { 40.f, 40.f } };
     box.setPosition({ 500.f, 480.f });
-    box.setFillColor({ 10, 180, 30 });
+    box.setFillColor({ 10u, 180u, 30u });
 
     // Movable player
     auto player = sf::RectangleShape{ { 40.f, 40.f } };
     player.setOrigin({ 20.f, 20.f });
     player.setPosition({ 400.f, 40.f });
-    player.setFillColor({ 10, 30, 180 });
+    player.setFillColor({ 10u, 30u, 180u });
 
     // Player speed
     auto speed = sf::Vector2f{ 0.f, 0.f };
 
     // Gravity value
-    const auto gravity = 980.f;
+    constexpr auto Gravity = 980.f;
 
     // Check if we're touching any floor/box
     auto touching = false;
@@ -38,7 +38,7 @@ int main()
     while (window.isOpen())
     {
         // Get delta time for frame-rate depended movement
-        auto dt = frametime.restart().asSeconds();
+        auto deltaTime = frameTime.restart().asSeconds();
 
         // Event handling
         for (auto event = sf::Event{}; window.pollEvent(event);)
@@ -66,15 +66,15 @@ int main()
         // Adjust vertical speed
         if (touching)
         {
-	        speed.y = gravity;
+	        speed.y = Gravity;
         }
-        else if (speed.y < gravity)
+        else if (speed.y < Gravity)
         {
 	        speed.y += 10.f;
         }
-        else if(speed.y > gravity)
+        else if(speed.y > Gravity)
         {
-	        speed.y = gravity;
+	        speed.y = Gravity;
         }
 
         // Horizontal movement
@@ -98,7 +98,7 @@ int main()
         }
 
         // Move the player
-        player.setPosition({ player.getPosition().x + speed.x * dt, player.getPosition().y + speed.y * dt });
+        player.setPosition({ player.getPosition().x + speed.x * deltaTime, player.getPosition().y + speed.y * deltaTime });
 
         // Check collision & position adjustment
         if (floor.getGlobalBounds().intersects(player.getGlobalBounds())) // Floor

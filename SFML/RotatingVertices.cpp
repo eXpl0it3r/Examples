@@ -11,7 +11,7 @@ static constexpr float to_degree(const float radian)
 
 int main()
 {
-	sf::RenderWindow window{ { 1280u, 720u }, "Rotating Vertices" };
+	auto window = sf::RenderWindow{ { 1280u, 720u }, "Rotating Vertices" };
 	window.setFramerateLimit(60u);
 
 	auto triangle_vertices = std::vector<sf::Vertex>{ 3u };
@@ -36,10 +36,9 @@ int main()
 			}
 			else if (event.type == sf::Event::MouseMoved)
 			{
-				auto mouse_position = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-				auto dx = mouse_position.x - transformable.getPosition().x;
-				auto dy = mouse_position.y - transformable.getPosition().y;
-				auto rotation = to_degree(atan2(dy, dx)) + 90.f;
+				auto mousePosition = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+				auto deltaPosition = sf::Vector2f{ mousePosition.x - transformable.getPosition().x, mousePosition.y - transformable.getPosition().y };
+				auto rotation = to_degree(atan2(deltaPosition.y, deltaPosition.x)) + 90.f;
 
 				transformable.setRotation(rotation);
 			}

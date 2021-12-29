@@ -55,7 +55,7 @@ bool gzip_inflate(const std::string& compressed_bytes, std::string& uncompressed
 	    return false;
     }
 
-    for (auto i = std::size_t{ 0 }; i < strm.total_out; ++i)
+    for (auto i = std::size_t{ 0u }; i < strm.total_out; ++i)
     {
         uncompressed_bytes += uncompressed[i];
     }
@@ -79,7 +79,7 @@ bool load_binary_file(const std::string& filename, std::string& contents)
     // Read all the bytes in the file
     char buffer[1024] = {0};
 
-    while (file.read(buffer, 1024))
+    while (file.read(buffer, 1024u))
     {
         contents.append(buffer, file.gcount());
     }

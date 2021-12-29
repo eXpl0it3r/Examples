@@ -3,8 +3,8 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800, 600 }, "Center Text" };
-    window.setFramerateLimit(60);
+    auto window = sf::RenderWindow{ { 800u, 600u }, "Center Text" };
+    window.setFramerateLimit(60u);
 
     auto font = sf::Font{};
     if (!font.loadFromFile("tuffy.ttf"))

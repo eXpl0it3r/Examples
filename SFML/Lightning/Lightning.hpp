@@ -19,7 +19,7 @@ public:
     void setSize(const sf::Vector2f& size);
 
 private:
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     float rand(float low, float high);
 	static sf::VertexArray line(sf::Vector2f start, sf::Vector2f end, unsigned int thickness, sf::Color color);
 
@@ -29,7 +29,7 @@ private:
     sf::Color          m_fadeColor;
     sf::Vector2f       m_size;      // Size of the lightning
 
-    unsigned long      m_numberOfSegments;
+    std::size_t        m_numberOfSegments;
     unsigned int       m_thickness;
 
     std::vector<float> m_segments;  // Contains the x-position of each segment (-1.0 - +1.0), multiply with width to get final position

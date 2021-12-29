@@ -12,14 +12,14 @@ T clamp(const T& value, const T& low, const T& high)
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800, 600 }, "Hue Shift" };
-    window.setFramerateLimit(60); // Limit the frame-rate
+    auto window = sf::RenderWindow{ { 800u, 600u }, "Hue Shift" };
+    window.setFramerateLimit(60u); // Limit the frame-rate
 
     auto rectangle = sf::RectangleShape{ { 350.f, 350.f } };
     rectangle.setPosition({ 150.f, 150.f });
 
     // Starting color
-    float hue = 0.f;
+    auto hue = 0.f;
 
     while (window.isOpen())
     {
@@ -39,15 +39,15 @@ int main()
         }
 
         // Convert hue to RGB
-        float r = std::abs(3.f - 6.f * hue) - 1.f;
-        float g = 2.f - std::abs(2.f - 6.f * hue);
-        float b = 2.f - std::abs(4.f - 6.f * hue);
+        auto r = std::abs(3.f - 6.f * hue) - 1.f;
+        auto g = 2.f - std::abs(2.f - 6.f * hue);
+        auto b = 2.f - std::abs(4.f - 6.f * hue);
 
         // Normalize the RGB values with clamp and apply them to the full 255 RGB spectrum
         rectangle.setFillColor({
-            static_cast<sf::Uint8>(clamp(r, 0.f, 1.f) * 255),
-        	static_cast<sf::Uint8>(clamp(g, 0.f, 1.f) * 255),
-        	static_cast<sf::Uint8>(clamp(b, 0.f, 1.f) * 255)
+            static_cast<sf::Uint8>(clamp(r, 0.f, 1.f) * 255u),
+        	static_cast<sf::Uint8>(clamp(g, 0.f, 1.f) * 255u),
+        	static_cast<sf::Uint8>(clamp(b, 0.f, 1.f) * 255u)
         });
 
         window.clear();

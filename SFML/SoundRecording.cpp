@@ -16,9 +16,9 @@ int main()
         std::cout << (i + 1) << "\t" << recorders[i] << "\n";
     }
 
-    auto option = 0U;
+    auto option = 0u;
 
-    while (option <= 0 || option > recorders.size())
+    while (option <= 0u || option > recorders.size())
     {
         std::cout << "Pick your recording device: ";
         std::cin >> option;
@@ -28,9 +28,9 @@ int main()
     auto recorder = sf::SoundBufferRecorder{};
     recorder.setDevice(recorders[option - 1]);
 
-    option = 0;
+    option = 0u;
 
-    while (option <= 0 || option > 3)
+    while (option <= 0u || option > 3u)
     {
         std::cout << "Do you want to record Mono (1) or Stereo (2): ";
         std::cin >> option;
@@ -51,15 +51,15 @@ int main()
 
     std::cout << "Recording stopped!\n";
 
-    const auto buffer = recorder.getBuffer();
+    const auto& Buffer = recorder.getBuffer();
 
     std::cout << "Recording properties:\n";
-    std::cout << "\tSample Count:\t" << buffer.getSampleCount() << "\n";
-    std::cout << "\tSample Rate:\t" << buffer.getSampleRate() << "\n";
-    std::cout << "\tChannel Count:\t" << buffer.getChannelCount() << "\n";
-    std::cout << "\tDuration:\t" << buffer.getDuration().asSeconds() << "s\n";
+    std::cout << "\tSample Count:\t" << Buffer.getSampleCount() << "\n";
+    std::cout << "\tSample Rate:\t" << Buffer.getSampleRate() << "\n";
+    std::cout << "\tChannel Count:\t" << Buffer.getChannelCount() << "\n";
+    std::cout << "\tDuration:\t" << Buffer.getDuration().asSeconds() << "s\n";
 
-    auto sound = sf::Sound{ buffer };
+    auto sound = sf::Sound{ Buffer };
     sound.play();
 
     std::cout << "Playing it back...\n";
@@ -80,7 +80,7 @@ int main()
 
     if (choice == 'y' || choice == 'Y')
     {
-        if (!buffer.saveToFile("buffer.wav"))
+        if (!Buffer.saveToFile("buffer.wav"))
         {
             std::cout << "Failed to save audio to buffer.wav\n";
         }

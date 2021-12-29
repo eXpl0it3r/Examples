@@ -4,11 +4,11 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800, 600 }, "Lightning" };
-    window.setFramerateLimit(60);
+    auto window = sf::RenderWindow{ { 800u, 600u }, "Lightning" };
+    window.setFramerateLimit(60u);
 
     // Initialize lightning class
-    auto lightning = Lightning{ 30, 3, sf::Color::Green, sf::Color::Blue };
+    auto lightning = Lightning{ 30u, 3u, sf::Color::Green, sf::Color::Blue };
     lightning.setPosition({ 20.f, 20.f });
     lightning.setSize({ 30.f, 600.f });
     lightning.setOrigin({ 0.f, 10.f });

@@ -4,11 +4,11 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 500, 500 }, "Fading Dots" };
-    window.setFramerateLimit(60);
+    auto window = sf::RenderWindow{ { 500u, 500u }, "Fading Dots" };
+    window.setFramerateLimit(60u);
 
-    auto old_position = sf::Vector2f{ 0.f, 0.f };
-    const auto STEP = 1;
+    auto oldPosition = sf::Vector2f{ 0.f, 0.f };
+    constexpr auto Step = 1;
 
     auto points = std::list<sf::CircleShape>{};
 
@@ -24,16 +24,17 @@ int main()
 
         // Check if the mouse has moved
         auto position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        if (position != old_position)
+
+        if (position != oldPosition)
         {
             // Create and add a new circle to the points list.
-            auto circle_shape = sf::CircleShape{ 10.f };
-            circle_shape.setRadius(10.f);
-            circle_shape.setPosition(position);
-            circle_shape.setFillColor(sf::Color::Red);
-            points.push_back(circle_shape);
+            auto circleShape = sf::CircleShape{ 10.f };
+            circleShape.setRadius(10.f);
+            circleShape.setPosition(position);
+            circleShape.setFillColor(sf::Color::Red);
+            points.push_back(circleShape);
 
-            old_position = position;
+            oldPosition = position;
         }
 
         window.clear();
@@ -42,13 +43,13 @@ int main()
         {
             window.draw(*it);
 
-            if (it->getFillColor().a - STEP < 0) // When the transparency falls below zero (= invisible) then erase the dot.
+            if (it->getFillColor().a - Step < 0) // When the transparency falls below zero (= invisible) then erase the dot.
             {
 	            it = points.erase(it);
             }
             else // Otherwise draw it with a increasing green touch (turns yellowish).
             {
-                it->setFillColor({ 255, static_cast<sf::Uint8>(it->getFillColor().g + STEP), 0, static_cast<sf::Uint8>(it->getFillColor().a - STEP) });
+                it->setFillColor({ 255u, static_cast<sf::Uint8>(it->getFillColor().g + Step), 0u, static_cast<sf::Uint8>(it->getFillColor().a - Step) });
             }
         }
 

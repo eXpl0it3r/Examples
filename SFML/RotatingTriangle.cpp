@@ -10,7 +10,7 @@ static constexpr float to_degree(const float radian)
 
 int main()
 {
-	sf::RenderWindow window{ { 1280u, 720u }, "Rotating Triangle" };
+	auto window = sf::RenderWindow{ { 1280u, 720u }, "Rotating Triangle" };
 	window.setFramerateLimit(60u);
 
 	auto triangle = sf::CircleShape{ 50.f, 3u };
@@ -29,10 +29,9 @@ int main()
 			}
 			else if (event.type == sf::Event::MouseMoved)
 			{
-				auto mouse_position = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-				auto dx = mouse_position.x - triangle.getPosition().x;
-				auto dy = mouse_position.y - triangle.getPosition().y;
-				auto rotation = to_degree(atan2(dy, dx)) + 90.f;
+				auto mousePosition = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
+				auto deltaPosition = sf::Vector2f{ mousePosition.x - triangle.getPosition().x, mousePosition.y - triangle.getPosition().y };
+				auto rotation = to_degree(atan2(deltaPosition.y, deltaPosition.x)) + 90.f;
 
 				triangle.setRotation(rotation);
 			}
