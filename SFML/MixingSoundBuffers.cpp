@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
+#include <limits>
 #include <vector>
 
 int main()
@@ -31,12 +32,12 @@ int main()
     const auto rate = bufferOne.getSampleRate();
     const auto size = std::max(bufferOne.getSampleCount(), bufferTwo.getSampleCount());
 
-    auto samples = std::vector<sf::Int16>(size, 0);
+    auto samples = std::vector<std::int16_t>(size, 0);
 
     for (auto i = std::size_t{ 0u }; i < size; ++i)
     {
-        auto bufferOneSample = sf::Int16{ 0 };
-        auto bufferTwoSample = sf::Int16{ 0 };
+        auto bufferOneSample = std::int16_t{ 0 };
+        auto bufferTwoSample = std::int16_t{ 0 };
 
         if (i < bufferOne.getSampleCount())
         {
@@ -50,15 +51,15 @@ int main()
         // Mixing
         if (bufferOneSample < 0 && bufferTwoSample < 0)
         {
-	        samples[i] = static_cast<sf::Int16>((bufferOneSample + bufferTwoSample) - static_cast<sf::Int16>((bufferOneSample * bufferTwoSample) / INT16_MIN));
+	        samples[i] = static_cast<std::int16_t>((bufferOneSample + bufferTwoSample) - static_cast<std::int16_t>((bufferOneSample * bufferTwoSample) / std::numeric_limits<std::int16_t>::max()));
         }
         else if (bufferOneSample > 0 && bufferTwoSample > 0)
         {
-	        samples[i] = static_cast<sf::Int16>((bufferOneSample + bufferTwoSample) - static_cast<sf::Int16>((bufferOneSample * bufferTwoSample) / INT16_MAX));
+	        samples[i] = static_cast<std::int16_t>((bufferOneSample + bufferTwoSample) - static_cast<std::int16_t>((bufferOneSample * bufferTwoSample) / std::numeric_limits<std::int16_t>::max()));
         }
         else
         {
-	        samples[i] = static_cast<sf::Int16>(bufferOneSample + bufferTwoSample);
+	        samples[i] = static_cast<std::int16_t>(bufferOneSample + bufferTwoSample);
         }
     }
 

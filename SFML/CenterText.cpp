@@ -3,7 +3,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800u, 600u }, "Center Text" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 800u, 600u } }, "Center Text" };
     window.setFramerateLimit(60u);
 
     auto font = sf::Font{};

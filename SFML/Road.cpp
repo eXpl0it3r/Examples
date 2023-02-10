@@ -5,7 +5,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1024u, 768u }, "Road" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 1024u, 768u } }, "Road" };
     window.setFramerateLimit(60u);
 
     auto grass = sf::RectangleShape{ { 262.f, 768.f } };

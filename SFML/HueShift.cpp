@@ -2,17 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <algorithm>
 #include <cmath>
-
-template <typename T>
-T clamp(const T& value, const T& low, const T& high)
-{
-	return value < low ? low : (value > high ? high : value);
-}
+#include <cstdint>
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800u, 600u }, "Hue Shift" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 800u, 600u } }, "Hue Shift" };
     window.setFramerateLimit(60u); // Limit the frame-rate
 
     auto rectangle = sf::RectangleShape{ { 350.f, 350.f } };
@@ -45,9 +41,9 @@ int main()
 
         // Normalize the RGB values with clamp and apply them to the full 255 RGB spectrum
         rectangle.setFillColor({
-            static_cast<sf::Uint8>(clamp(r, 0.f, 1.f) * 255u),
-        	static_cast<sf::Uint8>(clamp(g, 0.f, 1.f) * 255u),
-        	static_cast<sf::Uint8>(clamp(b, 0.f, 1.f) * 255u)
+            static_cast<std::uint8_t>(std::clamp(r, 0.f, 1.f) * 255u),
+        	static_cast<std::uint8_t>(std::clamp(g, 0.f, 1.f) * 255u),
+        	static_cast<std::uint8_t>(std::clamp(b, 0.f, 1.f) * 255u)
         });
 
         window.clear();

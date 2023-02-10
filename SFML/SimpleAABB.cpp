@@ -3,7 +3,7 @@
 int main()
 {
     // Create window
-    auto window = sf::RenderWindow{ { 800u, 600u }, "Simple AABB" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 800u, 600u } }, "Simple AABB" };
     // Limit frame-rate
     window.setFramerateLimit(60u);
 
@@ -101,12 +101,12 @@ int main()
         player.setPosition({ player.getPosition().x + speed.x * deltaTime, player.getPosition().y + speed.y * deltaTime });
 
         // Check collision & position adjustment
-        if (floor.getGlobalBounds().intersects(player.getGlobalBounds())) // Floor
+        if (floor.getGlobalBounds().findIntersection(player.getGlobalBounds())) // Floor
         {
             player.setPosition({ player.getPosition().x, floor.getPosition().y - player.getOrigin().y });
             touching = true;
         }
-        else if (box.getGlobalBounds().intersects(player.getGlobalBounds())) // Box
+        else if (box.getGlobalBounds().findIntersection(player.getGlobalBounds())) // Box
         {
             player.setPosition({ player.getPosition().x, box.getPosition().y - player.getOrigin().y });
             touching = true;

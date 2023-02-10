@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
 
+#include <cstdint>
 #include <list>
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 500u, 500u }, "Fading Dots" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 500u, 500u } }, "Fading Dots" };
     window.setFramerateLimit(60u);
 
     auto oldPosition = sf::Vector2f{ 0.f, 0.f };
@@ -49,7 +50,7 @@ int main()
             }
             else // Otherwise draw it with a increasing green touch (turns yellowish).
             {
-                it->setFillColor({ 255u, static_cast<sf::Uint8>(it->getFillColor().g + Step), 0u, static_cast<sf::Uint8>(it->getFillColor().a - Step) });
+                it->setFillColor({ 255u, static_cast<std::uint8_t>(it->getFillColor().g + Step), 0u, static_cast<std::uint8_t>(it->getFillColor().a - Step) });
             }
         }
 

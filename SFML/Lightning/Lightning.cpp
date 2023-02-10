@@ -1,5 +1,7 @@
 #include "Lightning.hpp"
 
+#include <cstdint>
+
 Lightning::Lightning(const unsigned long numberOfSegments, const unsigned int thickness, const sf::Color color, const sf::Color fadeColor) :
     m_rand{ 42 },
 	m_color{ color },
@@ -61,7 +63,7 @@ float Lightning::rand(const float low, const float high)
 
 sf::VertexArray Lightning::line(const sf::Vector2f start, const sf::Vector2f end, const unsigned int thickness, const sf::Color color)
 {
-    auto line = sf::VertexArray{ sf::Lines, std::size_t{ 2u } * thickness };
+    auto line = sf::VertexArray{ sf::PrimitiveType::Lines, std::size_t{ 2u } * thickness };
     for (auto i = std::size_t{ 0u }; i < std::size_t{ 2u } * thickness; i += 2u)
     {
         line[i].position = start;
@@ -75,8 +77,9 @@ sf::VertexArray Lightning::line(const sf::Vector2f start, const sf::Vector2f end
     return line;
 }
 
-void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Lightning::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
 {
+    auto newStates = states;
     auto color = sf::Color{};
 	auto colorStep = sf::Color{};
 
@@ -90,21 +93,21 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
         color = m_fadeColor;
 
         // sf::Color doesn't provide the minus or division operators, so we'll have to make the calculations component by component
-        const auto colorDifference = sf::Color{ static_cast<sf::Uint8>(m_color.r - m_fadeColor.r),
-        	                                    static_cast<sf::Uint8>(m_color.g - m_fadeColor.g),
-                                                static_cast<sf::Uint8>(m_color.b - m_fadeColor.b),
-                                                static_cast<sf::Uint8>(m_color.a - m_fadeColor.a) };
-        colorStep = sf::Color{ static_cast<sf::Uint8>(colorDifference.r / static_cast<sf::Uint8>(m_thickness - 1)),
-                               static_cast<sf::Uint8>(colorDifference.g / static_cast<sf::Uint8>(m_thickness - 1)),
-                               static_cast<sf::Uint8>(colorDifference.b / static_cast<sf::Uint8>(m_thickness - 1)),
-                               static_cast<sf::Uint8>(colorDifference.a / static_cast<sf::Uint8>(m_thickness - 1)) }; // Increase the fade color by this each iteration.
+        const auto colorDifference = sf::Color{ static_cast<std::uint8_t>(m_color.r - m_fadeColor.r),
+        	                                    static_cast<std::uint8_t>(m_color.g - m_fadeColor.g),
+                                                static_cast<std::uint8_t>(m_color.b - m_fadeColor.b),
+                                                static_cast<std::uint8_t>(m_color.a - m_fadeColor.a) };
+        colorStep = sf::Color{ static_cast<std::uint8_t>(colorDifference.r / static_cast<std::uint8_t>(m_thickness - 1)),
+                               static_cast<std::uint8_t>(colorDifference.g / static_cast<std::uint8_t>(m_thickness - 1)),
+                               static_cast<std::uint8_t>(colorDifference.b / static_cast<std::uint8_t>(m_thickness - 1)),
+                               static_cast<std::uint8_t>(colorDifference.a / static_cast<std::uint8_t>(m_thickness - 1)) }; // Increase the fade color by this each iteration.
     }
 
     const auto segmentHeight = m_size.y / static_cast<float>(m_numberOfSegments - 1);
     const auto halfWidth = m_size.x / 2.f;
     const auto halfThickness = static_cast<float>(m_thickness) / 2.f;
 
-    states.transform *= getTransform();
+    newStates.transform *= getTransform();
 
     // Draw multiple lightnings, decreasing the thickness by 1.0 until we reach thickness 1.0 (or less)
     for (auto t = m_thickness; t >= 1u; --t, color += colorStep)
@@ -114,7 +117,7 @@ void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	    	const auto start = sf::Vector2f{ m_segments[c] * (halfWidth - halfThickness) + halfWidth, segmentHeight * static_cast<float>(c) };
 	    	const auto end = sf::Vector2f{ m_segments[c + 1u] * (halfWidth - halfThickness) + halfWidth, segmentHeight * static_cast<float>(c + 1u) };
 
-	    	target.draw(line(start, end, t, color), states);
+	    	target.draw(line(start, end, t, color), newStates);
 	    }
     }
 }

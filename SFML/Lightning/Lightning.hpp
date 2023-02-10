@@ -19,10 +19,11 @@ public:
     void setSize(const sf::Vector2f& size);
 
 private:
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget& target, const sf::RenderStates& states) const override;
     float rand(float low, float high);
 	static sf::VertexArray line(sf::Vector2f start, sf::Vector2f end, unsigned int thickness, sf::Color color);
 
+private:
     std::minstd_rand   m_rand;
 
     sf::Color          m_color;

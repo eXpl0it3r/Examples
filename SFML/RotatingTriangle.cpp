@@ -1,16 +1,9 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-static constexpr auto PI = 3.14159265359f;
-
-static constexpr float to_degree(const float radian)
-{
-	return radian * (180.f / PI);
-}
-
 int main()
 {
-	auto window = sf::RenderWindow{ { 1280u, 720u }, "Rotating Triangle" };
+	auto window = sf::RenderWindow{ sf::VideoMode { { 1280u, 720u } }, "Rotating Triangle" };
 	window.setFramerateLimit(60u);
 
 	auto triangle = sf::CircleShape{ 50.f, 3u };
@@ -31,7 +24,7 @@ int main()
 			{
 				auto mousePosition = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
 				auto deltaPosition = sf::Vector2f{ mousePosition.x - triangle.getPosition().x, mousePosition.y - triangle.getPosition().y };
-				auto rotation = to_degree(atan2(deltaPosition.y, deltaPosition.x)) + 90.f;
+				auto rotation = sf::radians(std::atan2(deltaPosition.y, deltaPosition.x)) + sf::degrees(90.f);
 
 				triangle.setRotation(rotation);
 			}

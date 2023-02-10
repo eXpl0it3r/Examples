@@ -19,7 +19,7 @@ sf::Vector2f normalize(const sf::Vector2f vector)
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1280u, 720u }, "Example: Basic Movement" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 1280u, 720u } }, "Example: Basic Movement" };
     window.setFramerateLimit(60u);
 
     auto movingRectangle = sf::RectangleShape{ { 64.f, 64.f } };

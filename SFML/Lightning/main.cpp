@@ -4,7 +4,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 800u, 600u }, "Lightning" };
+    auto window = sf::RenderWindow{ sf::VideoMode{ { 800u, 600u } }, "Lightning" };
     window.setFramerateLimit(60u);
 
     // Initialize lightning class
@@ -12,7 +12,7 @@ int main()
     lightning.setPosition({ 20.f, 20.f });
     lightning.setSize({ 30.f, 600.f });
     lightning.setOrigin({ 0.f, 10.f });
-    lightning.rotate(-10.f);
+    lightning.rotate(sf::degrees(-10.f));
     lightning.scale({ 0.5f, 0.5f });
 
     auto paused = false;
