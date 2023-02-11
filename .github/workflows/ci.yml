@@ -23,12 +23,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
 
       - name: Examples - Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: Examples
 
       - name: zlib - Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: madler/zlib
           path: zlib
