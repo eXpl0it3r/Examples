@@ -26,6 +26,14 @@ instead of the visual top/bottom, it tends to be more confusing that working wit
 sprites. In order to get it working properly, you have to take into account the `LocalBounds` as
 is shown in the given example.
 
+### [Complex WaitEvent](https://github.com/eXpl0it3r/Examples/blob/master/SFML/ComplexWaitEvent.cpp)
+
+Demonstrates the use of `window.waitEvent(event)` by separating the event handling and rendering in
+dedicated threads and using a queue to synchronize the events between the two threads.  
+It's generally not recommended to do this, as it adds a lot of complexity and essentially just mimics
+what is already being achieved by `window.pollEvent(event)`. Additionally, the unprotected shared access
+of `waitEvent` could be considered unsafe.
+
 ![Center Text](https://i.imgur.com/J1xQNzm.png)
 
 ### [Fading Dots](https://github.com/eXpl0it3r/Examples/blob/master/SFML/FadingDots.cpp)
@@ -105,6 +113,11 @@ lead to this example. I've even implemented some _very_ simple physics, which wi
 situations, but you can at least move around and jump.
 
 ![AABB](https://i.imgur.com/imYEzXa.png)
+
+### [Simple WaitEvent](https://github.com/eXpl0it3r/Examples/blob/master/SFML/SimpleWaitEvent.cpp)
+
+Demonstrates the use of `window.waitEvent(event)` with a very simple example of a rectangle changing
+its color, whenever there's a new frame being rendered.
 
 ### [Sound Recording](https://github.com/eXpl0it3r/Examples/blob/master/SFML/SoundRecording.cpp)
 

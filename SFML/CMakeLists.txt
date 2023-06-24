@@ -7,7 +7,8 @@ set(SFML_USE_STATIC_STD_LIBS ${EXAMPLES_LINK_SFML_STATICALLY})
 
 include(FetchContent)
 FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git)
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.0)
 FetchContent_MakeAvailable(SFML)
 
 
@@ -31,6 +32,18 @@ if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
         set_property(TARGET CenterText PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     elseif(CMAKE_COMPILER_IS_GNUCXX)
         target_compile_options(CenterText PRIVATE -static)
+    endif()
+endif()
+
+
+add_executable(ComplexWaitEvent ComplexWaitEvent.cpp)
+target_link_libraries(ComplexWaitEvent PRIVATE sfml-graphics)
+
+if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
+    if(MSVC)
+        set_property(TARGET ComplexWaitEvent PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    elseif(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(ComplexWaitEvent PRIVATE -static)
     endif()
 endif()
 
@@ -143,6 +156,18 @@ if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
 endif()
 
 
+add_executable(SimpleWaitEvent SimpleWaitEvent.cpp)
+target_link_libraries(SimpleWaitEvent PRIVATE sfml-graphics)
+
+if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
+    if(MSVC)
+        set_property(TARGET SimpleWaitEvent PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    elseif(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(SimpleWaitEvent PRIVATE -static)
+    endif()
+endif()
+
+
 add_executable(SoundRecording SoundRecording.cpp)
 target_link_libraries(SoundRecording PRIVATE sfml-audio)
 
@@ -157,6 +182,7 @@ endif()
 
 install(TARGETS BasicMovement
                 CenterText
+                ComplexWaitEvent
                 FadingDots
                 Flashlight
                 HueShift
@@ -166,6 +192,7 @@ install(TARGETS BasicMovement
                 RotatingTriangle
                 RotatingVertices
                 SimpleAABB
+                SimpleWaitEvent
                 SoundRecording
                 RUNTIME DESTINATION .)
 
