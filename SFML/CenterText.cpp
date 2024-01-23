@@ -19,7 +19,7 @@ int main()
     rectangle.setPosition({ 200.f, 200.f });
     rectangle.setFillColor(sf::Color::Transparent);
 
-    auto text = sf::Text{ "Test 1234", font };
+    auto text = sf::Text{ font, "Test 1234" };
     text.setOrigin(text.getGlobalBounds().getSize() / 2.f + text.getLocalBounds().getPosition());
     text.setPosition(rectangle.getPosition() + (rectangle.getSize() / 2.f));
 

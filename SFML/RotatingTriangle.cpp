@@ -23,7 +23,7 @@ int main()
 			else if (event.type == sf::Event::MouseMoved)
 			{
 				auto mousePosition = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-				auto deltaPosition = sf::Vector2f{ mousePosition.x - triangle.getPosition().x, mousePosition.y - triangle.getPosition().y };
+				auto deltaPosition = mousePosition - triangle.getPosition();
 				auto rotation = sf::radians(std::atan2(deltaPosition.y, deltaPosition.x)) + sf::degrees(90.f);
 
 				triangle.setRotation(rotation);

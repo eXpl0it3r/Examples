@@ -78,21 +78,21 @@ int main()
         }
 
         // Horizontal movement
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {
 	        speed.x = 0.f;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
         {
 	        speed.x = -120.f;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
         {
 	        speed.x = 120.f;
         }
 
         // Jumping
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && touching)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && touching)
         {
 	        speed.y = -300.f;
         }

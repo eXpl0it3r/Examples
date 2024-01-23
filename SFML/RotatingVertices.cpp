@@ -30,7 +30,7 @@ int main()
 			else if (event.type == sf::Event::MouseMoved)
 			{
 				auto mousePosition = window.mapPixelToCoords({ event.mouseMove.x, event.mouseMove.y });
-				auto deltaPosition = sf::Vector2f{ mousePosition.x - transformable.getPosition().x, mousePosition.y - transformable.getPosition().y };
+				auto deltaPosition = mousePosition - transformable.getPosition();
 				auto rotation = sf::radians(std::atan2(deltaPosition.y, deltaPosition.x)) + sf::degrees(90.f);
 
 				transformable.setRotation(rotation);

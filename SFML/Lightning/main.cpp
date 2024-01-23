@@ -21,15 +21,15 @@ int main()
     {
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
-            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape))
             {
 	            window.close();
             }
-            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Space)
             {
 	            paused = true;
             }
-            else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+            else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space)
             {
 	            paused = false;
             }

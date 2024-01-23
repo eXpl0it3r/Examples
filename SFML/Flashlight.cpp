@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 class Application
@@ -7,13 +8,21 @@ public:
     Application() :
         m_window{ sf::VideoMode{ { 300u, 300u } }, "Flashlight!" },
         m_rectangle{ { 100.f, 100.f } },
+        m_flashlight{ m_flashlightTexture.getTexture() },
+        m_sprite{ m_layer.getTexture() },
         m_position{ 0.f, 0.f }
     {
         m_window.setFramerateLimit(60u);
         m_window.setMouseCursorVisible(false);
 
-        m_layer.create({ 300u, 300u });
-        m_flashlightTexture.create({ 60u, 60u });
+        if (!m_layer.create({ 300u, 300u }))
+        {
+            sf::err() << "Failed to create RenderTexture" << std::endl;
+        }
+        if (!m_flashlightTexture.create({ 60u, 60u }))
+        {
+            sf::err() << "Failed to create RenderTexture" << std::endl;
+        }
 
         // We want to have semi-transparent edges.
         generateSpot();
@@ -25,7 +34,7 @@ public:
         m_rectangle.setFillColor(sf::Color::Red);
         m_rectangle.setPosition({ 100.f, 100.f });
 
-        m_sprite.setTexture(m_layer.getTexture());
+        m_sprite.setTexture(m_layer.getTexture(), true);
     }
 
     void generateSpot()

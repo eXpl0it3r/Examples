@@ -51,26 +51,26 @@ int main()
             }
             else if (event.type == sf::Event::KeyPressed)
             {
-                keyStates[UP] = keyStates[UP] || (event.key.code == sf::Keyboard::Up);
-                keyStates[DOWN] = keyStates[DOWN] || (event.key.code == sf::Keyboard::Down);
-                keyStates[LEFT] = keyStates[LEFT] || (event.key.code == sf::Keyboard::Left);
-                keyStates[RIGHT] = keyStates[RIGHT] || (event.key.code == sf::Keyboard::Right);
+                keyStates[UP] = keyStates[UP] || (event.key.code == sf::Keyboard::Key::Up);
+                keyStates[DOWN] = keyStates[DOWN] || (event.key.code == sf::Keyboard::Key::Down);
+                keyStates[LEFT] = keyStates[LEFT] || (event.key.code == sf::Keyboard::Key::Left);
+                keyStates[RIGHT] = keyStates[RIGHT] || (event.key.code == sf::Keyboard::Key::Right);
             }
             else if (event.type == sf::Event::KeyReleased)
             {
-                if (event.key.code == sf::Keyboard::Up)
+                if (event.key.code == sf::Keyboard::Key::Up)
                 {
                     keyStates[UP] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Down)
+                else if (event.key.code == sf::Keyboard::Key::Down)
                 {
                     keyStates[DOWN] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Left)
+                else if (event.key.code == sf::Keyboard::Key::Left)
                 {
                     keyStates[LEFT] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Right)
+                else if (event.key.code == sf::Keyboard::Key::Right)
                 {
                     keyStates[RIGHT] = false;
                 }
