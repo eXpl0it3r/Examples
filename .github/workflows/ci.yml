@@ -1,50 +1,62 @@
 name: CI
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build:
-    name: ${{ matrix.platform.name }} ${{ matrix.config.name }}
+    name: ${{ matrix.platform.name }}
     runs-on: ${{ matrix.platform.os }}
 
     strategy:
       fail-fast: false
       matrix:
         platform:
-          - { name: Windows VS2019, os: windows-2019 }
-          - { name: Windows VS2022, os: windows-2022 }
-          - { name: Linux GCC, os: ubuntu-22.04 }
-          - { name: Linux Clang, os: ubuntu-22.04, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-          - { name: MacOS XCode, os: macos-12 }
+          - { name: Windows VS2026, os: windows-2025 }
+          - { name: Linux GCC,      os: ubuntu-26.04 }
+          - { name: Linux Clang,    os: ubuntu-26.04, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+          - { name: macOS Xcode,    os: macos-26 }
 
     steps:
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
+        run: sudo apt-get update && sudo apt-get install libx11-dev libfreetype-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libharfbuzz-dev libgl1-mesa-dev libegl1-mesa-dev libmbedtls-dev libssh2-1-dev
 
       - name: Examples - Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           path: Examples
+          persist-credentials: false
 
       - name: zlib - Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           repository: madler/zlib
           path: zlib
+          persist-credentials: false
 
       - name: zlib - Configure CMake
-        shell: bash
-        run: cmake -S $GITHUB_WORKSPACE/zlib -B $GITHUB_WORKSPACE/zlib/build -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/zlib/install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON ${{matrix.platform.flags}}
+        env:
+          CMAKE_FLAGS: ${{ matrix.platform.flags }}
+        run: cmake -S "$GITHUB_WORKSPACE/zlib" -B "$GITHUB_WORKSPACE/zlib/build" -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/zlib/install" -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON $CMAKE_FLAGS
 
       - name: zlib - Build
-        shell: bash
-        run: cmake --build $GITHUB_WORKSPACE/zlib/build --config Release --target install
+        run: cmake --build "$GITHUB_WORKSPACE/zlib/build" --config Release --target install
 
       - name: Examples - Configure CMake
-        shell: bash
-        run: cmake -S $GITHUB_WORKSPACE/Examples -B $GITHUB_WORKSPACE/Examples/build -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/Examples/install -DCMAKE_VERBOSE_MAKEFILE=ON -DZLIB_ROOT=$GITHUB_WORKSPACE/zlib/install -DEXAMPLES_BUILD_SFML=ON -DEXAMPLES_LINK_SFML_STATICALLY=OFF -DEXAMPLES_BUILD_ZLIB=ON -DEXAMPLES_LINK_ZLIB_STATICALLY=OFF -DEXAMPLES_LINK_RUNTIME_STATICALLY=OFF ${{matrix.platform.flags}}
+        env:
+          CMAKE_FLAGS: ${{ matrix.platform.flags }}
+        run: cmake -S "$GITHUB_WORKSPACE/Examples" -B "$GITHUB_WORKSPACE/Examples/build" -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/Examples/install" -DCMAKE_VERBOSE_MAKEFILE=ON -DZLIB_ROOT="$GITHUB_WORKSPACE/zlib/install" -DEXAMPLES_BUILD_SFML=ON -DEXAMPLES_LINK_SFML_STATICALLY=OFF -DEXAMPLES_BUILD_ZLIB=ON -DEXAMPLES_LINK_ZLIB_STATICALLY=OFF -DEXAMPLES_LINK_RUNTIME_STATICALLY=OFF $CMAKE_FLAGS
 
       - name: Examples - Build
-        shell: bash
-        run: cmake --build $GITHUB_WORKSPACE/Examples/build --config Release --target install
+        run: cmake --build "$GITHUB_WORKSPACE/Examples/build" --config Release --target install
