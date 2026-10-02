@@ -7,12 +7,14 @@ set(SFML_USE_STATIC_STD_LIBS ${EXAMPLES_LINK_SFML_STATICALLY})
 
 include(FetchContent)
 FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git)
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 3.1.0
+    GIT_SHALLOW ON)
 FetchContent_MakeAvailable(SFML)
 
 
 add_executable(BasicMovement BasicMovement.cpp)
-target_link_libraries(BasicMovement PRIVATE sfml-graphics)
+target_link_libraries(BasicMovement PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -24,7 +26,7 @@ endif()
 
 
 add_executable(CenterText CenterText.cpp)
-target_link_libraries(CenterText PRIVATE sfml-graphics)
+target_link_libraries(CenterText PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -36,7 +38,7 @@ endif()
 
 
 add_executable(FadingDots FadingDots.cpp)
-target_link_libraries(FadingDots PRIVATE sfml-graphics)
+target_link_libraries(FadingDots PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -48,7 +50,7 @@ endif()
 
 
 add_executable(Flashlight Flashlight.cpp)
-target_link_libraries(Flashlight PRIVATE sfml-graphics)
+target_link_libraries(Flashlight PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -60,7 +62,7 @@ endif()
 
 
 add_executable(HueShift HueShift.cpp)
-target_link_libraries(HueShift PRIVATE sfml-graphics)
+target_link_libraries(HueShift PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -72,7 +74,7 @@ endif()
 
 
 add_executable(Lightning Lightning/main.cpp Lightning/Lightning.cpp Lightning/Lightning.hpp)
-target_link_libraries(Lightning PRIVATE sfml-graphics)
+target_link_libraries(Lightning PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -84,7 +86,7 @@ endif()
 
 
 add_executable(MixingSoundBuffers MixingSoundBuffers.cpp)
-target_link_libraries(MixingSoundBuffers PRIVATE sfml-audio)
+target_link_libraries(MixingSoundBuffers PRIVATE SFML::Audio)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -96,7 +98,7 @@ endif()
 
 
 add_executable(Road Road.cpp)
-target_link_libraries(Road PRIVATE sfml-graphics)
+target_link_libraries(Road PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -108,7 +110,7 @@ endif()
 
 
 add_executable(RotatingTriangle RotatingTriangle.cpp)
-target_link_libraries(RotatingTriangle PRIVATE sfml-graphics)
+target_link_libraries(RotatingTriangle PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -120,7 +122,7 @@ endif()
 
 
 add_executable(RotatingVertices RotatingVertices.cpp)
-target_link_libraries(RotatingVertices PRIVATE sfml-graphics)
+target_link_libraries(RotatingVertices PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -132,7 +134,7 @@ endif()
 
 
 add_executable(SimpleAABB SimpleAABB.cpp)
-target_link_libraries(SimpleAABB PRIVATE sfml-graphics)
+target_link_libraries(SimpleAABB PRIVATE SFML::Graphics)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)
@@ -144,7 +146,7 @@ endif()
 
 
 add_executable(SoundRecording SoundRecording.cpp)
-target_link_libraries(SoundRecording PRIVATE sfml-audio)
+target_link_libraries(SoundRecording PRIVATE SFML::Audio)
 
 if(WIN32 AND ${EXAMPLES_LINK_SFML_STATICALLY})
     if(MSVC)

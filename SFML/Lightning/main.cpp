@@ -19,19 +19,29 @@ int main()
 
     while (window.isOpen())
     {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
+        while (const auto event = window.pollEvent())
         {
-            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Escape))
+            if (event->is<sf::Event::Closed>())
             {
 	            window.close();
             }
-            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Space)
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
             {
-	            paused = true;
+                if (keyPressed->code == sf::Keyboard::Key::Escape)
+                {
+                    window.close();
+                }
+                else if (keyPressed->code == sf::Keyboard::Key::Space)
+                {
+                    paused = true;
+                }
             }
-            else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Key::Space)
+            else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
             {
-	            paused = false;
+                if (keyReleased->code == sf::Keyboard::Key::Space)
+                {
+                    paused = false;
+                }
             }
         }
 

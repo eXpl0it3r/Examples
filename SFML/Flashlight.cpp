@@ -15,13 +15,13 @@ public:
         m_window.setFramerateLimit(60u);
         m_window.setMouseCursorVisible(false);
 
-        if (!m_layer.create({ 300u, 300u }))
+        if (!m_layer.resize({ 300u, 300u }))
         {
-            sf::err() << "Failed to create RenderTexture" << std::endl;
+            sf::err() << "Failed to resize RenderTexture" << std::endl;
         }
-        if (!m_flashlightTexture.create({ 60u, 60u }))
+        if (!m_flashlightTexture.resize({ 60u, 60u }))
         {
-            sf::err() << "Failed to create RenderTexture" << std::endl;
+            sf::err() << "Failed to resize RenderTexture" << std::endl;
         }
 
         // We want to have semi-transparent edges.
@@ -61,9 +61,9 @@ public:
     {
         while (m_window.isOpen())
         {
-            for (auto event = sf::Event{}; m_window.pollEvent(event);)
+            while (const auto event = m_window.pollEvent())
             {
-                if (event.type == sf::Event::Closed)
+                if (event->is<sf::Event::Closed>())
                 {
 	                m_window.close();
                 }

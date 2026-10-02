@@ -26,7 +26,11 @@ int main()
     std::cin.ignore();
 
     auto recorder = sf::SoundBufferRecorder{};
-    recorder.setDevice(recorders[option - 1]);
+    if (!recorder.setDevice(recorders[option - 1]))
+    {
+        std::cerr << "Failed to set the recording device\n";
+        return 1;
+    }
 
     option = 0u;
 
@@ -64,7 +68,7 @@ int main()
 
     std::cout << "Playing it back...\n";
 
-    while (sound.getStatus() == sf::Sound::Playing)
+    while (sound.getStatus() == sf::Sound::Status::Playing)
     {
         sf::sleep(sf::seconds(0.5f));
     }

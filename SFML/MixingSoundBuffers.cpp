@@ -64,7 +64,7 @@ int main()
     }
 
     auto buffer = sf::SoundBuffer{};
-    if (!buffer.loadFromSamples(samples.data(), samples.size(), channels, rate))
+    if (!buffer.loadFromSamples(samples.data(), samples.size(), channels, rate, bufferOne.getChannelMap()))
     {
         std::cerr << "Unable to load the mixed sample data\n";
     }
@@ -72,7 +72,7 @@ int main()
     auto sound = sf::Sound{ buffer };
     sound.play();
 
-    while (sound.getStatus() == sf::Sound::Playing)
+    while (sound.getStatus() == sf::Sound::Status::Playing)
     {
         sf::sleep(sf::seconds(0.5f));
     }

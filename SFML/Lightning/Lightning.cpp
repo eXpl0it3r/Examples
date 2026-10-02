@@ -77,7 +77,7 @@ sf::VertexArray Lightning::line(const sf::Vector2f start, const sf::Vector2f end
     return line;
 }
 
-void Lightning::draw(sf::RenderTarget& target, const sf::RenderStates& states) const
+void Lightning::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     auto newStates = states;
     auto color = sf::Color{};

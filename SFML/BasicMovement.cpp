@@ -43,34 +43,34 @@ int main()
 	    auto velocity = 200.f;
 	    auto frameTime = frameClock.restart();
 
-        for (auto event = sf::Event{}; window.pollEvent(event);)
+        while (const auto event = window.pollEvent())
         {
-            if (event.type == sf::Event::Closed)
+            if (event->is<sf::Event::Closed>())
             {
                 window.close();
             }
-            else if (event.type == sf::Event::KeyPressed)
+            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
             {
-                keyStates[UP] = keyStates[UP] || (event.key.code == sf::Keyboard::Key::Up);
-                keyStates[DOWN] = keyStates[DOWN] || (event.key.code == sf::Keyboard::Key::Down);
-                keyStates[LEFT] = keyStates[LEFT] || (event.key.code == sf::Keyboard::Key::Left);
-                keyStates[RIGHT] = keyStates[RIGHT] || (event.key.code == sf::Keyboard::Key::Right);
+                keyStates[UP] = keyStates[UP] || (keyPressed->code == sf::Keyboard::Key::Up);
+                keyStates[DOWN] = keyStates[DOWN] || (keyPressed->code == sf::Keyboard::Key::Down);
+                keyStates[LEFT] = keyStates[LEFT] || (keyPressed->code == sf::Keyboard::Key::Left);
+                keyStates[RIGHT] = keyStates[RIGHT] || (keyPressed->code == sf::Keyboard::Key::Right);
             }
-            else if (event.type == sf::Event::KeyReleased)
+            else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
             {
-                if (event.key.code == sf::Keyboard::Key::Up)
+                if (keyReleased->code == sf::Keyboard::Key::Up)
                 {
                     keyStates[UP] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Key::Down)
+                else if (keyReleased->code == sf::Keyboard::Key::Down)
                 {
                     keyStates[DOWN] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Key::Left)
+                else if (keyReleased->code == sf::Keyboard::Key::Left)
                 {
                     keyStates[LEFT] = false;
                 }
-                else if (event.key.code == sf::Keyboard::Key::Right)
+                else if (keyReleased->code == sf::Keyboard::Key::Right)
                 {
                     keyStates[RIGHT] = false;
                 }

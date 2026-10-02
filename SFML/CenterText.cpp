@@ -7,7 +7,7 @@ int main()
     window.setFramerateLimit(60u);
 
     auto font = sf::Font{};
-    if (!font.loadFromFile("tuffy.ttf"))
+    if (!font.openFromFile("tuffy.ttf"))
     {
         std::cerr << "Couldn't load font\n";
         return -1;
@@ -20,20 +20,20 @@ int main()
     rectangle.setFillColor(sf::Color::Transparent);
 
     auto text = sf::Text{ font, "Test 1234" };
-    text.setOrigin(text.getGlobalBounds().getSize() / 2.f + text.getLocalBounds().getPosition());
+    text.setOrigin(text.getGlobalBounds().size / 2.f + text.getLocalBounds().position);
     text.setPosition(rectangle.getPosition() + (rectangle.getSize() / 2.f));
 
     auto globalBounds = text.getGlobalBounds();
     auto localBounds = text.getLocalBounds();
 
-    std::cout << "(" << globalBounds.left << ", " << globalBounds.top << ") (" << globalBounds.width << ", " << globalBounds.height << ")\n";
-    std::cout << "(" << localBounds.left << ", " << localBounds.top << ") (" << localBounds.width << ", " << localBounds.height << ")\n";
+    std::cout << "(" << globalBounds.position.x << ", " << globalBounds.position.y << ") (" << globalBounds.size.x << ", " << globalBounds.size.y << ")\n";
+    std::cout << "(" << localBounds.position.x << ", " << localBounds.position.y << ") (" << localBounds.size.x << ", " << localBounds.size.y << ")\n";
 
     while (window.isOpen())
     {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
+        while (const auto event = window.pollEvent())
         {
-            if (event.type == sf::Event::Closed)
+            if (event->is<sf::Event::Closed>())
             {
                 window.close();
             }
